@@ -21,7 +21,7 @@ push 後在 Actions 頁 `Run workflow`。
 ## 3. 驗收檢查點
 - [ ] `discovery` job 綠：artifacts 有 `inventory`；其 `reviewers` 輸出為 6 個（i18n 預設關）。
 - [ ] `review` matrix 跑出 6 個 job（`fail-fast:false`）；各自上傳 `findings-<reviewer>`。
-- [ ] artifact 路徑：每個 `findings-<reviewer>` 內含 `<reviewer>.json`（驗證單檔 upload 的結構假設；若實際多了 `findings/` 前綴，調整 report 的 download path 或 upload 的 working-directory）。
+- [ ] artifact 路徑（已按 GHA v4 語意接線；此處為確認）：reviewer 上傳的 artifact 內含 `findings/<r>.json`；synthesis/report download 到 **workspace root**（`path: ${{ inputs.target }}` = `.`）+ `merge-multiple`，重建為 `./findings/<r>.json`，正是 `report.ts` 讀的位置；inventory 同理寫在 workspace。確認 run log 中 findings/inventory 落點正確、`report` 抓到非空 findings。
 - [ ] 每份 findings 通過 `validateReviewerOutput`（finalize 已保證；抽查一份 LLM 真實輸出格式正確）。
 - [ ] `synthesis` job 即使某 reviewer 失敗仍跑（`if: always()`）；產出 `synthesis`。
 - [ ] `report` job 產出 `report-html` artifact，且在 Sudoku 開出一個帶 `audit` 標籤的 issue；再跑一次確認是 edit 同一個 issue（upsert，靠 `ISSUE_MARKER`）而非開新 issue。

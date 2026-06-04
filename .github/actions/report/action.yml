@@ -20,7 +20,7 @@ runs:
     - uses: actions/download-artifact@v4
       with:
         pattern: findings-*
-        path: ${{ inputs.target }}/findings
+        path: ${{ inputs.target }}
         merge-multiple: true
     - uses: actions/download-artifact@v4
       with:
