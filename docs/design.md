@@ -199,12 +199,12 @@ report:
 
 ## 6. Repo 落點（已定）
 
-此 action 發佈成可被 `uses:` 引用者，故獨立成 repo：`/Users/zw/GitHub/Wei18/upkeep/`（已 `git init`）。
+此 action 發佈成可被 `uses:` 引用者，故獨立成 repo。本地目錄 `/Users/zw/GitHub/Wei18/repo-audit-action/`（已 `git init`）；**發佈/套件名為 `upkeep`**（`uses: wei18/upkeep@v1`）——本地資料夾名與發佈名不同是刻意保留。
 
 預期結構：
 
 ```
-upkeep/
+repo-audit-action/                   # 本地目錄（發佈名 upkeep）
 ├── action.yml                       # composite action 進入點
 ├── README.md                        # 用法（uses: 範例、需要的 secret/權限）
 ├── docs/design.md                   # 本 spec（living document）
