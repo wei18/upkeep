@@ -23,6 +23,32 @@ export interface RubricBundle {
   targetFiles: string[];         // 此 reviewer 要看的檔（相對路徑）
 }
 
+function globToRegex(glob: string): RegExp {
+  let re = '';
+  for (let i = 0; i < glob.length; i++) {
+    const c = glob[i];
+    if (c === '*') {
+      if (glob[i + 1] === '*') {
+        i++;
+        // `**/` 應錨在路徑區段邊界（含零段），避免 `**/README.md` 誤中 `xREADME.md`
+        if (glob[i + 1] === '/') { re += '(?:.*/)?'; i++; }
+        else re += '.*';
+      } else {
+        re += '[^/]*';
+      }
+    } else if (c === '?') {
+      re += '[^/]';
+    } else {
+      re += c.replace(/[.+^${}()|[\]\\]/g, '\\$&');
+    }
+  }
+  return new RegExp(`^${re}$`);
+}
+
+function matchesAny(path: string, globs: string[]): boolean {
+  return globs.some((g) => globToRegex(g).test(path));
+}
+
 export function composeRubric(
   reviewer: ReviewerName,
   inventory: Inventory,
@@ -35,6 +61,8 @@ export function composeRubric(
     builtinRubric: join(actionRoot, 'reviewers', `${reviewer}.md`),
     conventionSources: inventory.conventions.map((c) => c.path),
     explicitRubric: cfg?.rubric ?? null,
-    targetFiles: inventory.files.filter((f) => cats.has(f.category)).map((f) => f.path),
+    targetFiles: inventory.files
+      .filter((f) => (cfg?.paths && cfg.paths.length > 0 ? matchesAny(f.path, cfg.paths) : cats.has(f.category)))
+      .map((f) => f.path),
   };
 }
