@@ -1,6 +1,4 @@
 // src/findings.ts
-import type { ReviewerName } from './types.js';
-
 const REVIEWERS = new Set<string>([
   'docs_staleness', 'code_hygiene', 'spec_flow',
   'visual_icon', 'duplicate_orphan', 'convention', 'i18n',
@@ -31,7 +29,8 @@ export function validateReviewerOutput(input: unknown): { valid: boolean; errors
     const f = raw as Record<string, unknown>;
     if (typeof f !== 'object' || f === null) { errors.push(`${at} must be an object`); return; }
     if (!reqStr(f.file)) errors.push(`${at}.file required (non-empty string)`);
-    if (!Array.isArray(f.related)) errors.push(`${at}.related must be an array`);
+    if (!Array.isArray(f.related) || !f.related.every((x) => typeof x === 'string'))
+      errors.push(`${at}.related must be an array of strings`);
     if (!REVIEWERS.has(f.reviewer as string)) errors.push(`${at}.reviewer invalid`);
     if (!CATEGORIES.has(f.category as string)) errors.push(`${at}.category invalid`);
     if (!reqStr(f.problem)) errors.push(`${at}.problem required`);

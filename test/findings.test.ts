@@ -65,4 +65,11 @@ describe('validateReviewerOutput', () => {
   it('accepts failed status with empty findings', () => {
     expect(validateReviewerOutput({ reviewer: 'i18n', status: 'failed', findings: [] }).valid).toBe(true);
   });
+
+  it('rejects related entries that are not strings', () => {
+    const bad = { ...goodOutput, findings: [{ ...goodFinding, related: [123] }] };
+    const r = validateReviewerOutput(bad);
+    expect(r.valid).toBe(false);
+    expect(r.errors.some((e) => e.includes('related'))).toBe(true);
+  });
 });
