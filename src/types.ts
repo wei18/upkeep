@@ -100,6 +100,7 @@ export interface SynthesisOutput {
 }
 
 export interface ConsolidatedFinding extends Finding {
+  // 繼承的 `reviewer`（單數）= 代表 finding 的擁有者；顯示一律用 `reviewers`（聯集）
   reviewers: ReviewerName[];       // 回報此 file+category 的所有 reviewer（聯集）
 }
 

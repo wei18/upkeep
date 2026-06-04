@@ -53,7 +53,7 @@ export function renderIssueMarkdown(report: ConsolidatedReport): string {
   L.push('| Severity | Conf | File | Category | Reviewers | Problem |');
   L.push('|---|---|---|---|---|---|');
   for (const f of report.findings) {
-    L.push(`| ${f.severity} | ${f.confidence} | \`${f.file}\` | ${f.category} | ${f.reviewers.join(', ')} | ${cell(f.problem)} |`);
+    L.push(`| ${f.severity} | ${f.confidence} | \`${cell(f.file)}\` | ${f.category} | ${f.reviewers.join(', ')} | ${cell(f.problem)} |`);
   }
   L.push('');
   L.push('_Full interactive report: see the workflow run HTML artifact._');

@@ -36,4 +36,8 @@ describe('renderIssueMarkdown', () => {
   it('warns about failed reviewers', () => {
     expect(renderIssueMarkdown(report)).toMatch(/i18n/);
   });
+  it('escapes pipes in a file path so the table is not broken', () => {
+    const r = { ...report, findings: [{ ...report.findings[0], file: 'src/a|b.ts' }] };
+    expect(renderIssueMarkdown(r)).toContain('src/a\\|b.ts');
+  });
 });
