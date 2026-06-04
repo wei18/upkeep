@@ -387,8 +387,8 @@ export function classify(path: string, content: Buffer): { modality: Modality; c
   let category: Category;
   if (lower.includes('icon') || ext === '.icns' || ext === '.ico') category = 'icon';
   else if (modality === 'raster_image') category = 'visual';
+  else if (lower.includes('spec')) category = 'spec'; // spec 先於 flow：docs/spec/flow.md → spec
   else if (modality === 'vector_diagram' || name.includes('flow')) category = 'flow';
-  else if (lower.includes('spec')) category = 'spec';
   else if (CODE.has(ext)) category = 'code';
   else if (DOC.has(ext)) category = 'doc';
   else if (CONFIG.has(ext)) category = 'config';
