@@ -2,7 +2,7 @@
 
 - 狀態：設計定案，待寫實作計畫
 - 日期：2026-06-04
-- 位置：獨立 repo `repo-audit-action/`（見 §6）
+- 位置：獨立 repo `repo-audit-action/`，spec 於 `docs/design.md`（見 §6）
 - 自我約束：**本 spec 是 SSOT，需隨實作持續 up-to-date**（此工具本身即在抓 drift，spec 不得漂移）
 
 ---
@@ -167,8 +167,7 @@ report:
 repo-audit-action/
 ├── action.yml                       # composite action 進入點
 ├── README.md                        # 用法（uses: 範例、需要的 secret/權限）
-├── docs/superpowers/specs/
-│   └── 2026-06-04-repo-audit-action-design.md   # 本 spec（living document）
+├── docs/design.md                   # 本 spec（living document）
 ├── reviewers/                       # 7 位內建 reviewer 的預設 rubric
 ├── scripts/                         # Discovery / Consolidate / Report 確定性骨架
 └── test/                            # 單元 + 契約 + e2e（樣本見 §10）
