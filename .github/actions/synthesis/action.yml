@@ -9,6 +9,9 @@ inputs:
     default: '15'
   claude_code_oauth_token:
     required: true
+  github_token:
+    description: Passed to claude-code-action so it skips the Claude GitHub App requirement
+    required: true
 runs:
   using: composite
   steps:
@@ -42,6 +45,7 @@ runs:
           Produce synthesis.json in the repository root per the contract in that prompt.
         claude_args: --allowedTools Read,Write,Glob,Grep --max-turns ${{ inputs.max_turns }} --model ${{ inputs.model }}
         claude_code_oauth_token: ${{ inputs.claude_code_oauth_token }}
+        github_token: ${{ inputs.github_token }}
     - name: finalize synthesis
       if: always()
       shell: bash

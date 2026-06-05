@@ -45,6 +45,7 @@ jobs:
           model: ${{ inputs.model }}
           max_turns: ${{ inputs.max_turns }}
           claude_code_oauth_token: ${{ secrets.claude_code_oauth_token }}
+          github_token: ${{ github.token }}
 
   synthesis:
     needs: review
@@ -57,6 +58,7 @@ jobs:
           model: ${{ inputs.model }}
           max_turns: ${{ inputs.max_turns }}
           claude_code_oauth_token: ${{ secrets.claude_code_oauth_token }}
+          github_token: ${{ github.token }}
 
   report:
     needs: synthesis
