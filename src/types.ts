@@ -1,14 +1,12 @@
 // src/types.ts
-export type Severity = 'low' | 'medium' | 'high';
+export const SEVERITIES = ['low', 'medium', 'high'] as const;
+export type Severity = typeof SEVERITIES[number];
 
-export type ReviewerName =
-  | 'docs_staleness'
-  | 'code_hygiene'
-  | 'spec_flow'
-  | 'visual_icon'
-  | 'duplicate_orphan'
-  | 'convention'
-  | 'i18n';
+export const REVIEWER_NAMES = [
+  'docs_staleness', 'code_hygiene', 'spec_flow',
+  'visual_icon', 'duplicate_orphan', 'convention', 'i18n',
+] as const;
+export type ReviewerName = typeof REVIEWER_NAMES[number];
 
 export type Modality = 'text' | 'vector_diagram' | 'raster_image' | 'binary';
 
@@ -53,18 +51,15 @@ export interface Inventory {
 
 export const MAX_FILE_KB = 100;
 
-export type Confidence = 'low' | 'medium' | 'high';
+export type Confidence = Severity; // same domain: low | medium | high
 
-export type FindingCategory =
-  | 'staleness'
-  | 'duplicate'
-  | 'orphan'
-  | 'convention'
-  | 'inconsistency'
-  | 'i18n_sync'
-  | 'other';
+export const FINDING_CATEGORIES = [
+  'staleness', 'duplicate', 'orphan', 'convention', 'inconsistency', 'i18n_sync', 'other',
+] as const;
+export type FindingCategory = typeof FINDING_CATEGORIES[number];
 
-export type SsotDirection = 'stale_a' | 'stale_b' | 'uncertain' | 'n/a';
+export const SSOT_DIRECTIONS = ['stale_a', 'stale_b', 'uncertain', 'n/a'] as const;
+export type SsotDirection = typeof SSOT_DIRECTIONS[number];
 
 export interface Finding {
   file: string;            // 主體檔（跨檔問題放主檔）

@@ -3,15 +3,11 @@ import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { parse } from 'yaml';
 import type { AuditConfig, ReviewerName, ReviewerConfig } from './types.js';
-
-const REVIEWERS: ReviewerName[] = [
-  'docs_staleness', 'code_hygiene', 'spec_flow',
-  'visual_icon', 'duplicate_orphan', 'convention', 'i18n',
-];
+import { REVIEWER_NAMES } from './types.js';
 
 export function defaultConfig(): AuditConfig {
   const reviewers = {} as Record<ReviewerName, ReviewerConfig>;
-  for (const r of REVIEWERS) reviewers[r] = { enabled: r !== 'i18n' };
+  for (const r of REVIEWER_NAMES) reviewers[r] = { enabled: r !== 'i18n' };
   return { version: 1, reviewers, report: { issueLabel: 'audit', minSeverity: 'low' } };
 }
 

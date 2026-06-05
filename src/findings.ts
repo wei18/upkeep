@@ -1,13 +1,10 @@
 // src/findings.ts
-const REVIEWERS = new Set<string>([
-  'docs_staleness', 'code_hygiene', 'spec_flow',
-  'visual_icon', 'duplicate_orphan', 'convention', 'i18n',
-]);
-const LEVELS = new Set(['low', 'medium', 'high']);
-const CATEGORIES = new Set([
-  'staleness', 'duplicate', 'orphan', 'convention', 'inconsistency', 'i18n_sync', 'other',
-]);
-const SSOT = new Set(['stale_a', 'stale_b', 'uncertain', 'n/a']);
+import { REVIEWER_NAMES, SEVERITIES, FINDING_CATEGORIES, SSOT_DIRECTIONS } from './types.js';
+
+const REVIEWERS = new Set<string>(REVIEWER_NAMES);
+const LEVELS = new Set<string>(SEVERITIES);
+const CATEGORIES = new Set<string>(FINDING_CATEGORIES);
+const SSOT = new Set<string>(SSOT_DIRECTIONS);
 
 export function validateReviewerOutput(input: unknown): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
