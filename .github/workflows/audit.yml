@@ -7,7 +7,7 @@ on:
         default: claude-opus-4-8
       max_turns:
         type: string
-        default: '15'
+        default: '30'
       issue_label:
         type: string
         default: audit

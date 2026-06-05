@@ -6,7 +6,7 @@ inputs:
   model:
     default: claude-opus-4-8
   max_turns:
-    default: '15'
+    default: '30'
   claude_code_oauth_token:
     required: true
   github_token:
