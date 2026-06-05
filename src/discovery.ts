@@ -31,10 +31,15 @@ export function discover(repoRoot: string): Inventory {
   const paths = listFiles(repoRoot);
   const times = lastCommitTimes(repoRoot, paths);
 
-  const raw = paths.map((p) => {
-    const content = readFileSync(join(repoRoot, p));
+  const raw = paths.flatMap((p) => {
+    let content: Buffer;
+    try {
+      content = readFileSync(join(repoRoot, p));
+    } catch {
+      return []; // 跳過無法當檔讀的項目：submodule gitlink、目錄、損壞 symlink
+    }
     const { modality, category } = classify(p, content);
-    return { path: p, content, modality, category };
+    return [{ path: p, content, modality, category }];
   });
 
   const graph = buildRefGraph(raw.map((r) => ({ path: r.path, modality: r.modality, content: r.content })));
