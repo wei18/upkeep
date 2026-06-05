@@ -37,7 +37,7 @@ jobs:
 
 **前提条件**
 
-- `CLAUDE_CODE_OAUTH_TOKEN` という名前のリポジトリ secret。
+- `CLAUDE_CODE_OAUTH_TOKEN` という名前のリポジトリ secret。ローカルで `claude setup-token` を実行して生成してください（Claude Pro/Max サブスクリプションが必要で、使用量はサブスクリプションに計上されます）。従量課金を使用する場合は、workflow の input を `anthropic_api_key` に変更することもできます。
 - 上記の `permissions` ブロック（`contents: read` + `issues: write`）。
 
 **出力**
