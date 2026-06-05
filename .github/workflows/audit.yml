@@ -18,6 +18,7 @@ on:
 permissions:
   contents: read
   issues: write
+  id-token: write   # claude-code-action mints a GitHub OIDC token
 
 jobs:
   discovery:

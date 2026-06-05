@@ -20,7 +20,7 @@ runs:
     - uses: actions/download-artifact@v4
       with:
         pattern: findings-*
-        path: ${{ inputs.target }}
+        path: ${{ inputs.target }}/findings
         merge-multiple: true
     - uses: actions/download-artifact@v4
       with:
@@ -48,6 +48,8 @@ runs:
       run: |
         set -euo pipefail
         ROOT="${{ github.action_path }}/../../.."
+        # ensure the label exists (gh issue create fails if the label is missing)
+        gh label create "${{ inputs.issue_label }}" --color FBCA04 --description "repo audit findings" --force >/dev/null 2>&1 || true
         gh issue list --state open --label "${{ inputs.issue_label }}" --json number,body > "${{ runner.temp }}/issues.json" || echo '[]' > "${{ runner.temp }}/issues.json"
         NUM="$("$ROOT/node_modules/.bin/tsx" "$ROOT/src/find-issue.ts" "${{ runner.temp }}/issues.json")"
         if [ -n "$NUM" ]; then
