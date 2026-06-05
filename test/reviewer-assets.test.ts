@@ -20,13 +20,13 @@ describe('reviewer assets', () => {
   });
 
   it('docs_staleness rubric covers staleness + multilingual sync', () => {
-    const text = readFileSync(join(ROOT, 'reviewers/docs_staleness.md'), 'utf8');
+    const text = readFileSync(join(ROOT, 'reviewers/en/docs_staleness.md'), 'utf8');
     expect(text.toLowerCase()).toContain('stale');
-    expect(text).toMatch(/multi|多語|README\.<locale>|zh-TW/);
+    expect(text).toMatch(/multi|multilingual|docs\/<locale>/i);
   });
 
   it('shared reviewer prompt template states the contract and SSOT rule', () => {
-    const text = readFileSync(join(ROOT, 'reviewers/_reviewer-prompt.md'), 'utf8');
+    const text = readFileSync(join(ROOT, 'reviewers/en/_reviewer-prompt.md'), 'utf8');
     expect(text).toContain('findings/');
     expect(text).toMatch(/ssot_direction|SSOT/);
     expect(text).toMatch(/severity/);

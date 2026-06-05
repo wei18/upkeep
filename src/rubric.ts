@@ -53,12 +53,13 @@ export function composeRubric(
   reviewer: ReviewerName,
   inventory: Inventory,
   actionRoot: string,
+  rubricLang = 'en',
 ): RubricBundle {
   const cats = new Set<Category>(DOMAINS[reviewer]);
   const cfg = inventory.config.reviewers[reviewer];
   return {
     reviewer,
-    builtinRubric: join(actionRoot, 'reviewers', `${reviewer}.md`),
+    builtinRubric: join(actionRoot, 'reviewers', rubricLang, `${reviewer}.md`),
     conventionSources: inventory.conventions.map((c) => c.path),
     explicitRubric: cfg?.rubric ?? null,
     targetFiles: inventory.files

@@ -19,13 +19,13 @@ describe('all reviewer rubrics exist', () => {
   });
   it('each rubric states the no-edit + SSOT discipline', () => {
     for (const r of ALL) {
-      const text = readFileSync(join(ROOT, 'reviewers', `${r}.md`), 'utf8');
-      expect(text, r).toMatch(/不要改|不修改|只報告/);
-      expect(text, r).toMatch(/ssot_direction|SSOT|分歧/);
+      const text = readFileSync(join(ROOT, 'reviewers/en', `${r}.md`), 'utf8');
+      expect(text, r).toMatch(/report[- ]only|only report|do not (edit|delete|modif)|never (edit|delet)/i);
+      expect(text, r).toMatch(/ssot_direction|SSOT|divergen/i);
     }
   });
   it('convention rubric references repo self-standards; i18n references localization', () => {
-    expect(readFileSync(join(ROOT, 'reviewers/convention.md'), 'utf8')).toMatch(/CLAUDE\.md|skills|workflows/);
-    expect(readFileSync(join(ROOT, 'reviewers/i18n.md'), 'utf8')).toMatch(/在地化|Localizable|\.lproj|翻譯/);
+    expect(readFileSync(join(ROOT, 'reviewers/en/convention.md'), 'utf8')).toMatch(/CLAUDE\.md|skills|workflows/);
+    expect(readFileSync(join(ROOT, 'reviewers/en/i18n.md'), 'utf8')).toMatch(/Localizable|\.lproj|i18n|localiz/i);
   });
 });

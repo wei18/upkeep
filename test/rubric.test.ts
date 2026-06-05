@@ -28,7 +28,7 @@ describe('composeRubric', () => {
 
   it('points builtinRubric at the action reviewers dir', () => {
     const b = composeRubric('docs_staleness', inv([]), '/action');
-    expect(b.builtinRubric).toBe('/action/reviewers/docs_staleness.md');
+    expect(b.builtinRubric).toBe('/action/reviewers/en/docs_staleness.md');
   });
 
   it('carries repo convention sources', () => {

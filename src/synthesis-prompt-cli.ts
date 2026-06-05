@@ -3,8 +3,8 @@ import { writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { buildSynthesisPrompt } from './prompt-bundle.js';
 
-// CLI: synthesis-prompt-cli.ts <outFile>
+// CLI: synthesis-prompt-cli.ts <outFile> [rubricLang=en]
 if (import.meta.url === `file://${process.argv[1]}`) {
   const actionRoot = fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '');
-  writeFileSync(process.argv[2], buildSynthesisPrompt(actionRoot));
+  writeFileSync(process.argv[2], buildSynthesisPrompt(actionRoot, process.argv[3] || 'en'));
 }

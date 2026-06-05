@@ -34,6 +34,7 @@ jobs:
     with:
       model: claude-opus-4-8     # optional
       issue_label: audit         # optional; default: audit
+      rubric_lang: en            # optional; reviewer language: en | zh-TW
     secrets:
       claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
 ```

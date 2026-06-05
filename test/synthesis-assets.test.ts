@@ -8,7 +8,7 @@ const ROOT = fileURLToPath(new URL('..', import.meta.url));
 
 describe('synthesis prompt asset', () => {
   it('states it reads all findings + inventory and writes synthesis.json', () => {
-    const text = readFileSync(join(ROOT, 'reviewers/_synthesis-prompt.md'), 'utf8');
+    const text = readFileSync(join(ROOT, 'reviewers/en/_synthesis-prompt.md'), 'utf8');
     expect(text).toContain('synthesis.json');
     expect(text).toMatch(/findings/);
     expect(text).toMatch(/related_files/);
