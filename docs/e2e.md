@@ -20,6 +20,7 @@ push 後在 Actions 頁 `Run workflow`。
 
 ## 3. 驗收檢查點
 - [ ] `discovery` job 綠：artifacts 有 `inventory`；其 `reviewers` 輸出為 6 個（i18n 預設關）。
+- [ ] **submodule 處理**：若 target repo 含 git submodule（gitlink，`git ls-files` 會回傳目錄路徑），`discovery` 不應崩潰（曾有 `EISDIR` bug，已修：跳過無法當檔讀的項目），且 submodule 路徑不出現在 `inventory.files`。本機可先驗：`node --import tsx src/discovery.ts <含submodule的repo> /tmp/inv.json` 不報錯。
 - [ ] `review` matrix 跑出 6 個 job（`fail-fast:false`）；各自上傳 `findings-<reviewer>`。
 - [ ] artifact 路徑（已按 GHA v4 語意接線；此處為確認）：reviewer 上傳的 artifact 內含 `findings/<r>.json`；synthesis/report download 到 **workspace root**（`path: ${{ inputs.target }}` = `.`）+ `merge-multiple`，重建為 `./findings/<r>.json`，正是 `report.ts` 讀的位置；inventory 同理寫在 workspace。確認 run log 中 findings/inventory 落點正確、`report` 抓到非空 findings。
 - [ ] 每份 findings 通過 `validateReviewerOutput`（finalize 已保證；抽查一份 LLM 真實輸出格式正確）。
