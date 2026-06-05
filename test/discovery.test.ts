@@ -44,4 +44,25 @@ describe('discover', () => {
     const big = inv.files.find((f) => f.path === 'big.md')!;
     expect(big.oversizedText).toBe(true);
   });
+
+  it('skips submodule/gitlink directory entries without crashing', () => {
+    const env = { ...process.env, GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@t',
+      GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@t' };
+    const dir = mkdtempSync(join(tmpdir(), 'sub-'));
+    execFileSync('git', ['init', '-q'], { cwd: dir });
+    writeFileSync(join(dir, 'a.ts'), 'x');
+    // nested git repo added as a gitlink (submodule) — appears in git ls-files as a directory path
+    const sub = join(dir, 'sub');
+    mkdirSync(sub);
+    execFileSync('git', ['init', '-q'], { cwd: sub });
+    writeFileSync(join(sub, 'x.txt'), 'y');
+    execFileSync('git', ['add', '-A'], { cwd: sub });
+    execFileSync('git', ['commit', '-qm', 's'], { cwd: sub, env });
+    execFileSync('git', ['add', 'a.ts', 'sub'], { cwd: dir });
+    execFileSync('git', ['commit', '-qm', 'init'], { cwd: dir, env });
+
+    const inv = discover(dir);
+    expect(inv.files.some((f) => f.path === 'a.ts')).toBe(true);
+    expect(inv.files.some((f) => f.path === 'sub')).toBe(false);
+  });
 });
