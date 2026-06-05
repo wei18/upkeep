@@ -1,5 +1,7 @@
 # Upkeep
 
+[English](../../README.md) · [繁體中文](../zh-TW/README.md) · **简体中文** · [日本語](../ja/README.md) · [한국어](../ko/README.md)
+
 一个可复用的 GitHub Actions workflow，持续检查仓库中的文档、规范与资源是否与代码保持一致，在偏差积累成问题之前将其捕获。
 
 ## 功能说明
@@ -60,16 +62,10 @@ jobs:
 
 ## 配置
 
-所有配置均为可选项 — 除上述调用 workflow 外，无需任何额外设置。如需启用或调整审查器，可创建 `.claude/audit.yml`；完整 schema 及选项说明见 [`docs/design.md`](docs/design.md)。
+所有配置均为可选项 — 除上述调用 workflow 外，无需任何额外设置。如需启用或调整审查器，可创建 `.claude/audit.yml`；完整 schema 及选项说明见 [`docs/design.md`](../design.md)。
 
 ## 文档
 
-- [`docs/overview.md`](docs/overview.md) — 流水线工作原理
-- [`docs/design.md`](docs/design.md) — 完整设计参考
-
-## 其他语言版本
-
-- [繁體中文](README.zh-TW.md)
-- [简体中文](README.zh-CN.md)（当前）
-- [日本語](README.ja.md)
-- [한국어](README.ko.md)
+- [`docs/overview.md`](overview.md) — 流水线工作原理
+- [`docs/design.md`](../design.md) — 完整设计参考
+- [`docs/why-reusable-workflow.md`](../en/why-reusable-workflow.md) — 为何是 reusable workflow 而非 `- uses:` step action

@@ -1,5 +1,7 @@
 # Upkeep
 
+[English](../../README.md) · [繁體中文](../zh-TW/README.md) · [简体中文](../zh-CN/README.md) · [日本語](../ja/README.md) · **한국어**
+
 저장소의 문서, 명세, 에셋이 실제 코드와 일치하는지 주기적으로 검사하여 드리프트가 누적되기 전에 잡아내는 재사용 가능한 GitHub Actions workflow입니다.
 
 ## 주요 기능
@@ -60,16 +62,10 @@ jobs:
 
 ## 설정
 
-모든 설정은 선택 사항입니다 — 위의 caller workflow 외에 별도 설정 없이 바로 사용할 수 있습니다. 리뷰어를 활성화하거나 조정하려면 `.claude/audit.yml`을 생성하세요. 전체 스키마와 옵션은 [`docs/design.md`](docs/design.md)를 참고하세요.
+모든 설정은 선택 사항입니다 — 위의 caller workflow 외에 별도 설정 없이 바로 사용할 수 있습니다. 리뷰어를 활성화하거나 조정하려면 `.claude/audit.yml`을 생성하세요. 전체 스키마와 옵션은 [`docs/design.md`](../design.md)를 참고하세요.
 
 ## 문서
 
-- [`docs/overview.md`](docs/overview.md) — 파이프라인 동작 방식
-- [`docs/design.md`](docs/design.md) — 전체 설계 참고 문서
-
-## 번역된 README
-
-- [繁體中文](README.zh-TW.md)
-- [简体中文](README.zh-CN.md)
-- [日本語](README.ja.md)
-- [한국어](README.ko.md) (현재 문서)
+- [`docs/overview.md`](overview.md) — 파이프라인 동작 방식
+- [`docs/design.md`](../design.md) — 전체 설계 참고 문서
+- [`docs/why-reusable-workflow.md`](../en/why-reusable-workflow.md) — 왜 step 액션이 아니라 reusable workflow인가

@@ -1,5 +1,7 @@
 # Upkeep
 
+[English](../../README.md) · **繁體中文** · [简体中文](../zh-CN/README.md) · [日本語](../ja/README.md) · [한국어](../ko/README.md)
+
 一個可重用的 GitHub Actions workflow，讓你的 repo 文件、規格說明與資源保持正確——在累積的偏差造成問題之前即時發現。
 
 ## 功能概述
@@ -60,16 +62,10 @@ jobs:
 
 ## 設定
 
-所有設定皆為選填——除了上方的呼叫端 workflow 之外，無需任何額外設置。如需啟用或調整審查員，請建立 `.claude/audit.yml`；完整 schema 與選項說明見 [`docs/design.md`](docs/design.md)。
+所有設定皆為選填——除了上方的呼叫端 workflow 之外，無需任何額外設置。如需啟用或調整審查員，請建立 `.claude/audit.yml`；完整 schema 與選項說明見 [`docs/design.md`](../design.md)。
 
 ## 文件
 
-- [`docs/overview.md`](docs/overview.md) — pipeline 運作原理
-- [`docs/design.md`](docs/design.md) — 完整設計參考
-
-## 翻譯版本
-
-- **繁體中文**
-- [简体中文](README.zh-CN.md)
-- [日本語](README.ja.md)
-- [한국어](README.ko.md)
+- [`docs/overview.md`](overview.md) — pipeline 運作原理
+- [`docs/design.md`](../design.md) — 完整設計參考
+- [`docs/why-reusable-workflow.md`](../en/why-reusable-workflow.md) — 為何是 reusable workflow 而非 `- uses:` step action

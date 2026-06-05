@@ -1,5 +1,7 @@
 # Upkeep
 
+[English](../../README.md) · [繁體中文](../zh-TW/README.md) · [简体中文](../zh-CN/README.md) · **日本語** · [한국어](../ko/README.md)
+
 リポジトリのドキュメント・仕様・アセットの整合性を維持するための再利用可能な GitHub Actions workflow です。ドリフトが蓄積する前に検出します。
 
 ## 概要
@@ -60,16 +62,10 @@ jobs:
 
 ## 設定
 
-設定はすべて任意です — 上記の呼び出し元 workflow 以外のセットアップは不要です。レビュアーを有効化・調整するには `.claude/audit.yml` を作成してください。スキーマとオプションの詳細は [`docs/design.md`](docs/design.md) を参照してください。
+設定はすべて任意です — 上記の呼び出し元 workflow 以外のセットアップは不要です。レビュアーを有効化・調整するには `.claude/audit.yml` を作成してください。スキーマとオプションの詳細は [`docs/design.md`](../design.md) を参照してください。
 
 ## ドキュメント
 
-- [`docs/overview.md`](docs/overview.md) — パイプラインの動作説明
-- [`docs/design.md`](docs/design.md) — 設計リファレンス（フル版）
-
-## 翻訳版 README
-
-- [繁體中文](README.zh-TW.md)
-- [简体中文](README.zh-CN.md)
-- 日本語（本ページ）
-- [한국어](README.ko.md)
+- [`docs/overview.md`](overview.md) — パイプラインの動作説明
+- [`docs/design.md`](../design.md) — 設計リファレンス（フル版）
+- [`docs/why-reusable-workflow.md`](../en/why-reusable-workflow.md) — なぜ step アクションではなく reusable workflow なのか

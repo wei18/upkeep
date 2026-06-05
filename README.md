@@ -1,5 +1,7 @@
 # Upkeep
 
+**English** · [繁體中文](docs/zh-TW/README.md) · [简体中文](docs/zh-CN/README.md) · [日本語](docs/ja/README.md) · [한국어](docs/ko/README.md)
+
 A reusable GitHub Actions workflow that keeps your repo's docs, specs, and assets honest — catching drift before it compounds.
 
 ## What it does
@@ -64,12 +66,6 @@ All configuration is optional — zero setup required beyond the caller workflow
 
 ## Docs
 
-- [`docs/overview.md`](docs/overview.md) — how the pipeline works
+- [`docs/overview.md`](docs/en/overview.md) — how the pipeline works
 - [`docs/design.md`](docs/design.md) — full design reference
-
-## Translated READMEs
-
-- [繁體中文](README.zh-TW.md)
-- [简体中文](README.zh-CN.md)
-- [日本語](README.ja.md)
-- [한국어](README.ko.md)
+- [`docs/why-reusable-workflow.md`](docs/en/why-reusable-workflow.md) — why it's a reusable workflow, not a `- uses:` step action
