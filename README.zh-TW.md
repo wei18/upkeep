@@ -37,7 +37,7 @@ jobs:
 
 **前置需求**
 
-- 一個名為 `CLAUDE_CODE_OAUTH_TOKEN` 的 repo secret。
+- 一個名為 `CLAUDE_CODE_OAUTH_TOKEN` 的 repo secret——請在本機執行 `claude setup-token` 產生（需 Claude Pro/Max 訂閱，用量計入訂閱配額）。若要改用按量計費，可將 workflow input 換成 `anthropic_api_key`。
 - 如上所示的 `permissions` 區塊（`contents: read` + `issues: write`）。
 
 **輸出**
