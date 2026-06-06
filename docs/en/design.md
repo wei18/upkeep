@@ -35,34 +35,34 @@ Triggers: `schedule` (periodic full scan via cron) + `workflow_dispatch` (manual
 Single-run data flow:
 
 ```
-觸發 (schedule / workflow_dispatch)
+Trigger (schedule / workflow_dispatch)
   │
   ▼
-[1] Discovery（確定性，非 LLM 重活）
-    掃 repo → 檔案清單 + 模態分類(code/doc/spec/visual/flow/icon...)
-    讀規範來源：CLAUDE.md、.claude/skills、.claude/workflows、
-                .github/workflows、.claude/audit.yml(若有)
+[1] Discovery (deterministic, non-LLM heavy lifting)
+    Scan repo → file inventory + modality classification (code/doc/spec/visual/flow/icon...)
+    Read convention sources: CLAUDE.md, .claude/skills, .claude/workflows,
+                .github/workflows, .claude/audit.yml (if present)
   │
   ▼
-[2] Review（matrix：每個啟用 reviewer 一個 claude-code-action step）
-    GHA matrix 原生平行、失敗隔離；唯一 LLM 成本集中處
-    每 step 帶：inventory + 負責檔案子集 + 合成 rubric(內建預設 ⊕ repo 規範)
-    各自輸出 findings/<reviewer>.json（schema 見 §4）
+[2] Review (matrix: one claude-code-action step per enabled reviewer)
+    GHA matrix gives native parallelism + fault isolation; the only concentrated LLM cost
+    Each step carries: inventory + its file subset + composed rubric (built-in default ⊕ repo conventions)
+    Each emits findings/<reviewer>.json (schema in §4)
   │
   ▼
-[3] Synthesis（單一 claude-code-action，唯一「融會貫通」的腦）
-    讀 全部 findings/*.json + inventory（精簡結構化素材，不重讀整 repo）
-    → 語意級跨 reviewer 關聯、去重、系統性主題、優先級敘事
+[3] Synthesis (single claude-code-action, the only "connect-the-dots" brain)
+    Reads all findings/*.json + inventory (compact structured material, no re-reading the whole repo)
+    → semantic cross-reviewer correlation, dedup, systemic themes, prioritized narrative
     → synthesis.json
   │
   ▼
-[4] Consolidate（確定性）
-    機械式合併 findings + synthesis、key 去重、排序(severity × confidence)
+[4] Consolidate (deterministic)
+    Mechanically merge findings + synthesis, dedup by key, sort (severity × confidence)
   │
   ▼
-[5] Report（確定性，零 LLM 成本）
-    ├─ 產出 self-contained 單檔 HTML 報告 → upload artifact
-    └─ 建立/更新 tracking issue（markdown 摘要 + 連到 HTML artifact）
+[5] Report (deterministic, zero LLM cost)
+    ├─ Produce a self-contained single-file HTML report → upload artifact
+    └─ Create/update tracking issue (markdown summary + link to HTML artifact)
 ```
 
 Key points:
@@ -91,10 +91,10 @@ The first version **does not support dynamic custom reviewers**; building `i18n`
 ### Rubric Three-Layer Composition (priority order, lowest to highest)
 
 ```
-內建預設 rubric（action 自帶，定義該專業抓什麼）
-   ⊕ repo 規範自動探索（CLAUDE.md / .claude/skills / .claude/workflows
-                         中與該領域相關者）
-   ⊕ audit.yml 顯式指定（reviewers.<name>.rubric 指向的 repo 檔）← 最高優先
+Built-in default rubric (shipped with the action; defines what this specialty looks for)
+   ⊕ repo-convention auto-discovery (the domain-relevant parts of
+                         CLAUDE.md / .claude/skills / .claude/workflows)
+   ⊕ audit.yml explicit override (the repo file pointed to by reviewers.<name>.rubric) ← highest priority
 ```
 
 When a repo has its own standards, those take priority. `convention` relies almost entirely on the repo's own conventions; `visual_icon` relies mainly on built-in defaults plus the repo's design guidelines (if any exist).
@@ -134,17 +134,17 @@ Each reviewer emits one record per issue:
 
 ```jsonc
 {
-  "file": "path/to/file",          // 主體檔（跨檔問題放主檔，related 補充）
-  "related": ["path/..."],          // 關聯檔（可空）
+  "file": "path/to/file",          // primary file (cross-file issues go on the primary; related[] supplements)
+  "related": ["path/..."],          // related files (may be empty)
   "reviewer": "docs_staleness",
   "category": "staleness | duplicate | orphan | convention | inconsistency | ...",
-  "problem": "人類可讀的問題描述",
-  "evidence": "支撐證據（git 時間、引用關係、具體不符之處）",
-  "suggestion": "建議修法（分級裁決下可能含方向）",
+  "problem": "human-readable problem description",
+  "evidence": "supporting evidence (git timestamps, reference relationships, the specific mismatch)",
+  "suggestion": "suggested fix (may include a direction under tiered judgment)",
   "severity": "high | medium | low",
   "confidence": "high | medium | low",
   "ssot_direction": "stale_a | stale_b | uncertain | n/a",
-  "status": "ok"                    // reviewer 層級：ok | failed
+  "status": "ok"                    // reviewer level: ok | failed
 }
 ```
 
@@ -158,17 +158,17 @@ The Synthesis step reads all `findings/*.json` + inventory and outputs `synthesi
 
 ```jsonc
 {
-  "themes": [                         // 跨 reviewer 的系統性主題
+  "themes": [                         // systemic themes spanning reviewers
     {
-      "title": "簡述系統性問題",
-      "narrative": "為何這些 finding 指向同一根因",
-      "related_files": ["path/a", "path/b"],  // 此主題涵蓋的檔路徑
+      "title": "brief statement of the systemic issue",
+      "narrative": "why these findings point to one root cause",
+      "related_files": ["path/a", "path/b"],  // file paths this theme covers
       "priority": "high | medium | low"
     }
   ],
-  "semantic_duplicates": [[ "reviewer|file|category", "reviewer|file|category" ]], // 語意重複的 finding 鍵群
-  "executive_summary": "整體健康度的一段話摘要",
-  "status": "ok"                      // synthesis 失敗→report 仍出 raw findings
+  "semantic_duplicates": [[ "reviewer|file|category", "reviewer|file|category" ]], // groups of semantically duplicate finding keys
+  "executive_summary": "one-paragraph summary of overall health",
+  "status": "ok"                      // synthesis failure → report still emits raw findings
 }
 ```
 
@@ -181,14 +181,14 @@ The Report uses both raw findings and synthesis output; if synthesis fails or is
 `scan` and `ssot` **are not config options** (they would become stale); both are auto-inferred instead.
 
 ```yaml
-# .claude/audit.yml —— 全可選；通常不需要此檔
+# .claude/audit.yml — fully optional; usually you don't need this file
 version: 1
-reviewers:               # 只列「要關掉/調範圍/開 i18n」的，其餘照預設
+reviewers:               # list only what to disable / re-scope / enable (i18n); the rest stay default
   visual_icon: { enabled: false }
   i18n:        { enabled: true }
 report:
-  issue_label: "audit"   # 預設即 "audit"，要改才寫
-  min_severity: "low"    # 低於此不進 issue（仍進 HTML 完整報告）
+  issue_label: "audit"   # defaults to "audit"; set only to change
+  min_severity: "low"    # below this does not enter the issue (still in the full HTML report)
 ```
 
 ### Auto-Inference (no configuration required)
@@ -205,20 +205,20 @@ This action is published to be referenced via `uses:`, so it lives in its own re
 Expected structure:
 
 ```
-repo-audit-action/                   # 本地目錄（發佈名 Upkeep）
+repo-audit-action/                   # local directory (published name: Upkeep)
 ├── .github/
-│   ├── workflows/audit.yml          # 可重用 workflow（on: workflow_call）：jobs/matrix 編排
-│   └── actions/                     # composite 子 action（被 workflow 的 job uses，自帶 Upkeep 程式碼）
+│   ├── workflows/audit.yml          # reusable workflow (on: workflow_call): jobs/matrix orchestration
+│   └── actions/                     # composite sub-actions (used by the workflow's jobs; carry Upkeep's own code)
 │       ├── discovery/  reviewer/  synthesis/  report/
-├── README.md                        # 英文 base 用法（job-level uses: 範例、secret/權限）+ 語言切換列
+├── README.md                        # English base usage (job-level uses: example, secret/permissions) + language switcher
 ├── docs/
-│   ├── en/      README 無（根即 en）；overview.md  design.md  why-reusable-workflow.md  plans/
+│   ├── en/      no README (root is en); overview.md  design.md  why-reusable-workflow.md  plans/
 │   ├── zh-TW/   README.md  overview.md  design.md  plans/
-│   ├── zh-CN/ … ja/ … ko/   （同上各語一套）
-│   └── （多語使用者文件一律 docs/<locale>/；root README.md 為 en base）
-├── reviewers/                       # 7 位內建 reviewer rubric + _reviewer-prompt + _synthesis-prompt
-├── src/                             # discovery/consolidate/report/matrix/prompt-bundle 等確定性 TS
-└── test/                            # 單元 + 契約 + e2e（樣本見 §10）
+│   ├── zh-CN/ … ja/ … ko/   (one set per language, same as above)
+│   └── (all multilingual user docs under docs/<locale>/; root README.md is the en base)
+├── reviewers/                       # 7 built-in reviewer rubrics + _reviewer-prompt + _synthesis-prompt
+├── src/                             # deterministic TS: discovery/consolidate/report/matrix/prompt-bundle, etc.
+└── test/                            # unit + contract + e2e (samples in §10)
 ```
 
 > Archive note: the `docs/<locale>/plans/` tree is a deliberate **archive** of the original step-by-step implementation plans (one set per locale). It is intentionally unlinked from any navigation index, and its fenced blocks (code and embedded doc templates) are kept **verbatim** from the zh-TW source — so empty `referencedBy` and in-fence non-English text on these files are expected, not drift.
