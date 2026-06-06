@@ -183,6 +183,8 @@ Report 同時用 raw findings 與 synthesis；synthesis 失敗或不存在時降
 ```yaml
 # .claude/audit.yml —— 全可選；通常不需要此檔
 version: 1
+ignore:                  # 可選：從整個稽核中排除的 glob 路徑（所有 reviewer）
+  - "docs/*/plans/**"    # 例如不想被稽核的封存設計記錄
 reviewers:               # 只列「要關掉/調範圍/開 i18n」的，其餘照預設
   visual_icon: { enabled: false }
   i18n:        { enabled: true }

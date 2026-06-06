@@ -183,6 +183,8 @@ Synthesis ステップは全 `findings/*.json` + inventory を読み込み、`sy
 ```yaml
 # .claude/audit.yml —— 全て任意；通常このファイルは不要
 version: 1
+ignore:                  # 任意: 監査全体から除外する glob パス（全 reviewer）
+  - "docs/*/plans/**"    # 例: 監査したくないアーカイブ済み設計記録
 reviewers:               # 「無効化/スコープ変更/i18n 有効化」するものだけ記述、それ以外はデフォルトのまま
   visual_icon: { enabled: false }
   i18n:        { enabled: true }

@@ -183,6 +183,8 @@ Report는 raw findings와 synthesis를 함께 사용합니다. synthesis 실패 
 ```yaml
 # .claude/audit.yml —— 전부 선택적; 일반적으로 이 파일이 필요하지 않음
 version: 1
+ignore:                  # 선택: 감사 전체에서 제외할 glob 경로(모든 reviewer)
+  - "docs/*/plans/**"    # 예: 감사하지 않을 보관된 설계 기록
 reviewers:               # "비활성화/범위 조정/i18n 활성화"할 항목만 나열, 나머지는 기본값 유지
   visual_icon: { enabled: false }
   i18n:        { enabled: true }

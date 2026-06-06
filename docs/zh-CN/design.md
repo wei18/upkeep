@@ -183,6 +183,8 @@ Report 同时使用 raw findings 与 synthesis；synthesis 失败或不存在时
 ```yaml
 # .claude/audit.yml —— 全部可选；通常不需要此文件
 version: 1
+ignore:                  # 可选：从整个审计中排除的 glob 路径（所有 reviewer）
+  - "docs/*/plans/**"    # 例如不想被审计的归档设计记录
 reviewers:               # 只列「要关掉/调范围/开 i18n」的，其余按默认
   visual_icon: { enabled: false }
   i18n:        { enabled: true }

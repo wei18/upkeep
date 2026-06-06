@@ -183,6 +183,8 @@ The Report uses both raw findings and synthesis output; if synthesis fails or is
 ```yaml
 # .claude/audit.yml — fully optional; usually you don't need this file
 version: 1
+ignore:                  # optional: glob paths dropped from the whole audit (all reviewers)
+  - "docs/*/plans/**"    # e.g. archived design records you don't want audited
 reviewers:               # list only what to disable / re-scope / enable (i18n); the rest stay default
   visual_icon: { enabled: false }
   i18n:        { enabled: true }
