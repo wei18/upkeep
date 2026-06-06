@@ -83,4 +83,4 @@ reviewers:
 
 - [`docs/overview.md`](overview.md) — pipeline 運作原理
 - [`docs/design.md`](design.md) — 完整設計參考
-- [`docs/why-reusable-workflow.md`](../en/why-reusable-workflow.md) — 為何是 reusable workflow 而非 `- uses:` step action
+- [`docs/why-reusable-workflow.md`](why-reusable-workflow.md) — 為何是 reusable workflow 而非 `- uses:` step action

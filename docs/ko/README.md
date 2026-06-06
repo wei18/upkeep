@@ -83,4 +83,4 @@ reviewers:
 
 - [`docs/overview.md`](overview.md) — 파이프라인 동작 방식
 - [`docs/design.md`](design.md) — 전체 설계 참고 문서
-- [`docs/why-reusable-workflow.md`](../en/why-reusable-workflow.md) — 왜 step 액션이 아니라 reusable workflow인가
+- [`docs/why-reusable-workflow.md`](why-reusable-workflow.md) — 왜 step 액션이 아니라 reusable workflow인가

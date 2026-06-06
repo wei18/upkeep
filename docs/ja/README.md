@@ -83,4 +83,4 @@ reviewers:
 
 - [`docs/overview.md`](overview.md) — パイプラインの動作説明
 - [`docs/design.md`](design.md) — 設計リファレンス（フル版）
-- [`docs/why-reusable-workflow.md`](../en/why-reusable-workflow.md) — なぜ step アクションではなく reusable workflow なのか
+- [`docs/why-reusable-workflow.md`](why-reusable-workflow.md) — なぜ step アクションではなく reusable workflow なのか
