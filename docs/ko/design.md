@@ -221,6 +221,8 @@ repo-audit-action/                   # 로컬 디렉터리（발행명 Upkeep）
 └── test/                            # 단위 + 계약 + e2e（테스트 샘플: §10 참조）
 ```
 
+> 아카이브 참고: `docs/<locale>/plans/` 트리는 원래의 단계별 구현 계획을 의도적으로 **보관**한 것입니다(로케일마다 한 세트). 어떤 내비게이션 인덱스에서도 의도적으로 링크되지 않으며, fenced 블록(코드 및 임베드된 문서 템플릿)은 zh-TW 소스에서 **그대로** 보존됩니다 — 따라서 이 파일들의 빈 `referencedBy`와 fence 내 비영어 텍스트는 예상된 것이며 드리프트가 아닙니다.
+
 > 서브 action 메커니즘: reusable workflow의 job은 **호출 측** checkout에서 실행됩니다. Upkeep 자체 코드(src/, reviewers/)는 `uses: wei18/upkeep/.github/actions/<x>@v1`을 통해 주입됩니다 (GitHub이 자동으로 Upkeep 저장소를 가져옴). 각 reviewer는 독립적인 matrix job으로 plain `claude-code-action` 프롬프트를 실행하여 `findings/<reviewer>.json`을 작성하며, **in-run subagent가 불필요**하므로 `--agents`/`Agent` passthrough 위험이 사라집니다.
 
 ---

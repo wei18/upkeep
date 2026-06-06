@@ -221,6 +221,8 @@ repo-audit-action/                   # 本地目錄（發佈名 Upkeep）
 └── test/                            # 單元 + 契約 + e2e（樣本見 §10）
 ```
 
+> Archive note: the `docs/<locale>/plans/` tree is a deliberate **archive** of the original step-by-step implementation plans (one set per locale). It is intentionally unlinked from any navigation index, and its fenced blocks (code and embedded doc templates) are kept **verbatim** from the zh-TW source — so empty `referencedBy` and in-fence non-English text on these files are expected, not drift.
+
 > Sub-action mechanism: jobs in a reusable workflow run on the **caller's** checkout; Upkeep's own code (`src/`, `reviewers/`) is brought in via `uses: wei18/upkeep/.github/actions/<x>@v1` (GitHub fetches the Upkeep repo automatically). Each reviewer is an independent matrix job running a plain `claude-code-action` prompt (writing `findings/<reviewer>.json`), so **no in-run subagent spawning is required**, eliminating any `--agents`/`Agent` passthrough risk.
 
 ---

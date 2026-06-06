@@ -221,6 +221,8 @@ repo-audit-action/                   # 本地目录（发布名 Upkeep）
 └── test/                            # 单元 + 契约 + e2e（样本见 §10）
 ```
 
+> 归档说明：`docs/<locale>/plans/` 子树是原始逐步实现计划的刻意**归档**（每种语言一套）。它刻意不被任何导航索引链接，且其 fenced 块（代码与嵌入的文档模板）一律保留 zh-TW 源的**逐字**内容——因此这些文件的空 `referencedBy` 与 fence 内的非英文内容均为预期，并非漂移。
+
 > 子 action 机制：reusable workflow 的 job 跑在**调用方**的 checkout；Upkeep 自身代码（src/、reviewers/）通过 `uses: wei18/upkeep/.github/actions/<x>@v1` 引入（GitHub 自动拉取 Upkeep repo）。每个 reviewer 是独立 matrix job 跑一个 plain `claude-code-action` prompt（写入 `findings/<reviewer>.json`），**无需 in-run subagent**，故 `--agents`/`Agent` passthrough 风险消失。
 
 ---
