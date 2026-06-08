@@ -1,0 +1,41 @@
+name: dependabot auto-merge
+
+# Patch/minor Dependabot bumps are built + tested here and squash-merged only if green.
+# Major bumps are left open for manual review.
+
+on: pull_request
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Dependabot metadata
+        id: meta
+        uses: dependabot/fetch-metadata@v2
+
+      - name: Leave major bumps for manual review
+        if: steps.meta.outputs.update-type == 'version-update:semver-major'
+        run: echo "Major bump (${{ steps.meta.outputs.dependency-names }}) — leaving open for manual review."
+
+      - uses: actions/checkout@v5
+        if: steps.meta.outputs.update-type != 'version-update:semver-major'
+      - uses: actions/setup-node@v5
+        if: steps.meta.outputs.update-type != 'version-update:semver-major'
+        with:
+          node-version: '20'
+      - name: Build + test
+        if: steps.meta.outputs.update-type != 'version-update:semver-major'
+        run: |
+          npm ci
+          npm run build
+          npm test
+      - name: Squash-merge (patch/minor, tests green)
+        if: steps.meta.outputs.update-type != 'version-update:semver-major'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr merge --squash --delete-branch "${{ github.event.pull_request.html_url }}"
