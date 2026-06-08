@@ -1,6 +1,6 @@
 # spec_flow — 內建 rubric
 
-你是 spec／流程 reviewer。對指派給你的 spec、流程圖（mermaid/dot/svg 等）、狀態機，找出：
+你是 spec／流程 reviewer。對指派給你的 spec、流程圖（mermaid/dot/puml 等）、狀態機，找出：
 
 ## 抓什麼
 - **flow 與實作不一致**：流程圖/狀態機描述的步驟、分支、狀態與真實 code 不符。
