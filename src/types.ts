@@ -38,7 +38,7 @@ export interface FileEntry {
   hash: string;          // sha256 hex；binary 也算
   oversizedText: boolean; // 文字類且 > MAX_FILE_KB
   lastCommitISO: string | null; // 無 git 記錄為 null
-  referencedBy: string[];       // 哪些檔在內文提及此檔 basename
+  referencedBy: string[];       // 哪些檔在內文以路徑 token 提及此檔 basename（word-boundary；TS 源也認 .js specifier）
 }
 
 export interface ConventionSource {

@@ -4,7 +4,7 @@ import type { Modality, Category } from './types.js';
 
 const RASTER = new Set(['.png', '.jpg', '.jpeg', '.gif', '.webp', '.bmp', '.tiff', '.heic', '.ico', '.icns']);
 const VECTOR = new Set(['.svg', '.mmd', '.dot', '.puml', '.plantuml']);
-const CODE = new Set(['.ts', '.tsx', '.js', '.jsx', '.swift', '.py', '.go', '.rs', '.java', '.kt', '.rb', '.c', '.h', '.cpp', '.m', '.sh']);
+const CODE = new Set(['.ts', '.tsx', '.mts', '.cts', '.js', '.jsx', '.mjs', '.cjs', '.swift', '.py', '.go', '.rs', '.java', '.kt', '.rb', '.c', '.h', '.cpp', '.m', '.sh']);
 const DOC = new Set(['.md', '.markdown', '.txt', '.rst', '.adoc']);
 const CONFIG = new Set(['.yml', '.yaml', '.json', '.toml', '.plist', '.xml']);
 

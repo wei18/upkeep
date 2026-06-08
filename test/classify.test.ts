@@ -9,6 +9,12 @@ describe('classify', () => {
     expect(classify('src/App.swift', txt('struct A {}')))
       .toEqual({ modality: 'text', category: 'code' });
   });
+
+  it('ESM/CJS TypeScript variants are code (consistent with refgraph TS_TO_JS)', () => {
+    for (const p of ['src/a.mts', 'src/a.cts', 'src/a.mjs', 'src/a.cjs']) {
+      expect(classify(p, txt('export {}')).category).toBe('code');
+    }
+  });
   it('markdown doc', () => {
     expect(classify('README.md', txt('# hi')).category).toBe('doc');
   });
