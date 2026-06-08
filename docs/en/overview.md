@@ -8,7 +8,7 @@ Periodic human review catches some of it, but it requires keeping the full conte
 
 ## The pipeline: fan-out → synthesis → report
 
-Upkeep runs as a reusable `workflow_call` workflow composed of four stages: Discovery and Report are deterministic (no LLM); the parallel reviewers and Synthesis are the LLM-driven stages.
+Upkeep runs as a reusable `workflow_call` workflow composed of five stages: Discovery, Consolidate, and Report are deterministic (no LLM); the parallel reviewers and Synthesis are the LLM-driven stages.
 
 **1. Discovery**
 
@@ -22,7 +22,11 @@ Each enabled reviewer runs as its own isolated matrix job. Jobs run in parallel 
 
 A single synthesis step reads all reviewer findings and identifies cross-cutting themes — for example, a pattern of convention drift concentrated in a particular directory, or multiple reviewers independently flagging the same file for different reasons. It produces an executive summary alongside the per-reviewer detail.
 
-**4. Report**
+**4. Consolidate**
+
+A deterministic step merges duplicate findings that multiple reviewers raised for the same file, keeps the highest-severity representative, unions their reviewers and related files, and sorts everything by severity. No LLM involved.
+
+**5. Report**
 
 A deterministic report step renders everything into a self-contained HTML file (no external dependencies) and upserts a GitHub tracking issue. The same issue is reused across runs so your issue tracker stays clean.
 

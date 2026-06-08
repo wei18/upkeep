@@ -8,7 +8,7 @@
 
 ## 파이프라인: fan-out → 종합 → 보고
 
-Upkeep은 네 개의 단계로 구성된 재사용 가능한 `workflow_call` workflow로 실행됩니다. Discovery와 Report는 결정적(LLM 없음)이며, 병렬 reviewers와 Synthesis가 LLM 기반 단계입니다.
+Upkeep은 다섯 개의 단계로 구성된 재사용 가능한 `workflow_call` workflow로 실행됩니다. Discovery, Consolidate, Report는 결정적(LLM 없음)이며, 병렬 reviewers와 Synthesis가 LLM 기반 단계입니다.
 
 **1. 탐색(Discovery)**
 
@@ -22,7 +22,11 @@ Upkeep은 네 개의 단계로 구성된 재사용 가능한 `workflow_call` wor
 
 단일 종합 단계에서 모든 리뷰어 결과를 읽고 공통 주제를 식별합니다. 예를 들어, 특정 디렉터리에 집중된 컨벤션 드리프트 패턴이나 여러 리뷰어가 서로 다른 이유로 동일한 파일을 독립적으로 지적하는 경우입니다. 리뷰어별 세부 내용과 함께 총괄 요약(executive summary)을 생성합니다.
 
-**4. 보고(Report)**
+**4. 통합(Consolidate)**
+
+결정적 단계에서 여러 리뷰어가 동일 파일에 대해 제기한 중복 findings를 병합하고, 심각도가 가장 높은 대표 항목을 남기며, reviewers와 관련 파일을 합집합으로 묶고, 심각도순으로 정렬합니다. LLM은 개입하지 않습니다.
+
+**5. 보고(Report)**
 
 결정적 보고 단계에서 모든 내용을 독립 실행형 HTML 파일(외부 의존성 없음)로 렌더링하고 GitHub 추적 이슈를 upsert합니다. 동일한 이슈가 여러 실행에 걸쳐 재사용되므로 이슈 트래커가 깔끔하게 유지됩니다.
 
