@@ -1,7 +1,7 @@
 # Upkeep — 설계 문서
 
-- 상태: 설계 확정, 구현 계획 작성 예정
-- 날짜: 2026-06-04
+- 상태: 구현 완료 및 v1으로 출시 — 본 스펙은 출시된 동작을 추적함
+- 날짜: 2026-06-04 (설계); 2026-06-05 출시
 - 위치: 독립 저장소 `upkeep/`, 스펙은 `docs/design.md`에 위치 (§6 참조)
 - 자체 제약: **본 스펙은 SSOT이며, 구현에 맞춰 지속적으로 최신 상태를 유지해야 함** (이 도구 자체가 drift를 감지하는 도구이므로, 스펙이 drift되어서는 안 됨)
 
@@ -99,6 +99,8 @@
 
 저장소에 자체 기준이 있을 경우 저장소 기준을 우선 적용합니다. `convention`은 거의 전적으로 저장소 자체 규범에 의존하며, `visual_icon`은 내장 기본값 + 저장소 디자인 규범 (있을 경우)에 주로 의존합니다.
 
+**Reviewer rubric 언어(`rubric_lang`)**: 내장 rubric은 로케일별로 `reviewers/<locale>/`(예: `reviewers/en/`, `reviewers/zh-TW/`)에 배치됩니다. `rubric_lang` workflow input(기본값 `en`)이 reviewer와 synthesis가 사용할 세트를 선택합니다.
+
 ### 2.1 다국어 문서 동기화 감지 (multilingual doc-set)
 
 `docs_staleness`가 담당합니다 (`i18n`이 아님——`i18n`은 `.lproj`/`Localizable.strings`와 같은 코드 수준 로컬라이제이션 문자열을 관리하며, 문서 번역 drift는 doc 영역에 해당합니다).
@@ -193,6 +195,8 @@ report:
   min_severity: "low"    # 이 수준 미만은 이슈에 포함되지 않음（HTML 전체 보고서에는 포함）
 ```
 
+> 설정 키는 `snake_case`(`issue_label`, `min_severity`)로 표기하지만, `snake_case`와 내부 `camelCase`(`issueLabel`, `minSeverity`)를 모두 허용합니다.
+
 ### 자동 추론 (설정 불필요)
 
 - **스캔 범위**: 저장소 `.gitignore` 준수; binary / lockfile / 빌드 산출물 자동 건너뜀; 텍스트 파일 내장 100KB 상한선 적용 (§7 모달 분류 참조).
@@ -218,7 +222,7 @@ repo-audit-action/                   # 로컬 디렉터리（발행명 Upkeep）
 │   ├── zh-TW/   README.md  overview.md  design.md  plans/
 │   ├── zh-CN/ … ja/ … ko/   （각 언어별 동일 구성）
 │   └── （다국어 사용자 문서는 모두 docs/<locale>/; 루트 README.md는 en base）
-├── reviewers/                       # 7개 내장 reviewer rubric + _reviewer-prompt + _synthesis-prompt
+├── reviewers/<locale>/              # 7개 내장 rubric + _reviewer-prompt + _synthesis-prompt, 로케일별(en, zh-TW); rubric_lang으로 선택
 ├── src/                             # discovery/consolidate/report/matrix/prompt-bundle 등 확정적 TS
 └── test/                            # 단위 + 계약 + e2e（테스트 샘플: §10 참조）
 ```

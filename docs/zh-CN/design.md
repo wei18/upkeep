@@ -1,7 +1,7 @@
 # Upkeep — 设计文档
 
-- 状态：设计定稿，待写实现计划
-- 日期：2026-06-04
+- 状态：已实现并以 v1 发布 — 本 spec 跟踪已发布的行为
+- 日期：2026-06-04（设计）；2026-06-05 发布
 - 位置：独立 repo `upkeep/`，spec 于 `docs/design.md`（见 §6）
 - 自我约束：**本 spec 是 SSOT，需随实现持续 up-to-date**（此工具本身即在检测 drift，spec 不得漂移）
 
@@ -99,6 +99,8 @@
 
 repo 有自己的标准时优先使用 repo 的。`convention` 几乎全靠 repo 自身规范；`visual_icon` 多靠内置默认＋repo 设计规范（若有）。
 
+**Reviewer rubric 语言（`rubric_lang`）**：内置 rubric 按语系分置于 `reviewers/<locale>/`（例如 `reviewers/en/`、`reviewers/zh-TW/`）。`rubric_lang` 这个 workflow input（默认 `en`）决定 reviewer 与 synthesis 使用哪一套。
+
 ### 2.1 多语文档同步检测（multilingual doc-set）
 
 由 `docs_staleness` 负责（非 `i18n`——`i18n` 管 code 层本地化字符串如 `.lproj`/`Localizable.strings`；文档翻译漂移属 doc 范畴）。
@@ -193,6 +195,8 @@ report:
   min_severity: "low"    # 低于此不进 issue（仍进 HTML 完整报告）
 ```
 
+> 配置键以 `snake_case` 显示（`issue_label`、`min_severity`）；`snake_case` 与内部 `camelCase`（`issueLabel`、`minSeverity`）均可接受。
+
 ### 自动推断（无需配置）
 
 - **扫描范围**：遵守 repo `.gitignore`；自动跳过 binary / lockfile / 构建产物；文本文件内置 100KB 上限（见 §7 模态分流）。
@@ -218,7 +222,7 @@ repo-audit-action/                   # 本地目录（发布名 Upkeep）
 │   ├── zh-TW/   README.md  overview.md  design.md  plans/
 │   ├── zh-CN/ … ja/ … ko/   （同上各语一套）
 │   └── （多语用户文档一律 docs/<locale>/；root README.md 为 en base）
-├── reviewers/                       # 7 位内置 reviewer rubric + _reviewer-prompt + _synthesis-prompt
+├── reviewers/<locale>/              # 7 位内置 rubric + _reviewer-prompt + _synthesis-prompt，按语系分置（en、zh-TW）；由 rubric_lang 选择
 ├── src/                             # discovery/consolidate/report/matrix/prompt-bundle 等确定性 TS
 └── test/                            # 单元 + 契约 + e2e（样本见 §10）
 ```
