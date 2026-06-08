@@ -3,7 +3,12 @@ import type {
   ReviewerOutput, Finding, ReviewerName, Severity, Theme,
   SynthesisOutput, ConsolidatedFinding, ConsolidatedReport, ReportStats,
 } from './types.js';
-import { SEVERITY_RANK } from './types.js';
+import { SEVERITY_RANK, REVIEWER_NAMES } from './types.js';
+
+// Reviewer enumeration order — the stable tiebreak for picking a group's
+// representative finding (design §4), independent of file/findings load order.
+const REVIEWER_RANK: Record<ReviewerName, number> =
+  Object.fromEntries(REVIEWER_NAMES.map((r, i) => [r, i])) as Record<ReviewerName, number>;
 
 function cmp(a: Finding, b: Finding): number {
   return (SEVERITY_RANK[b.severity] - SEVERITY_RANK[a.severity])
@@ -35,7 +40,8 @@ export function consolidate(
 
   const merged: ConsolidatedFinding[] = [];
   for (const group of groups.values()) {
-    const rep = [...group].sort(cmp)[0]; // 代表：severity×confidence 最高（穩定取先者）
+    // 代表：severity×confidence 最高；同分時依 reviewer 列舉序（design §4），不靠載入順序
+    const rep = [...group].sort((a, b) => cmp(a, b) || (REVIEWER_RANK[a.reviewer] - REVIEWER_RANK[b.reviewer]))[0];
     merged.push({
       ...rep,
       reviewers: uniq(group.map((g) => g.reviewer)).sort() as ReviewerName[],

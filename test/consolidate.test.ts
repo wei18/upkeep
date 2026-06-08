@@ -24,6 +24,19 @@ describe('consolidate', () => {
     expect(r.findings[0].reviewers.sort()).toEqual(['convention', 'docs_staleness']);
   });
 
+  it('breaks representative ties by REVIEWER_NAMES order, not input/file order (design §4)', () => {
+    // convention (rank 5) is first in input; on an exact severity×confidence tie,
+    // code_hygiene (rank 1) must win the representative slot.
+    const outputs: ReviewerOutput[] = [
+      { reviewer: 'convention', status: 'ok', findings: [f({ file: 'x.ts', category: 'code', reviewer: 'convention', problem: 'from-convention', severity: 'high', confidence: 'high' })] },
+      { reviewer: 'code_hygiene', status: 'ok', findings: [f({ file: 'x.ts', category: 'code', reviewer: 'code_hygiene', problem: 'from-code_hygiene', severity: 'high', confidence: 'high' })] },
+    ];
+    const r = consolidate(outputs, null, OPTS);
+    expect(r.findings.length).toBe(1);
+    expect(r.findings[0].reviewer).toBe('code_hygiene');
+    expect(r.findings[0].problem).toBe('from-code_hygiene');
+  });
+
   it('does not merge different categories on the same file', () => {
     const outputs: ReviewerOutput[] = [
       { reviewer: 'docs_staleness', status: 'ok', findings: [f({ category: 'staleness' })] },
