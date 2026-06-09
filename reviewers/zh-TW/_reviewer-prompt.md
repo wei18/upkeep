@@ -14,6 +14,9 @@
 2. 遵守你 rubric 內的 **SSOT 原則**：不預設真實來源、只報分歧、附證據、不確定就標 `ssot_direction: "uncertain"`。
 3. **不修改任何檔**——只產出 findings。
 
+## 工具（重要）
+你只有這些工具：`Read`、`Write`、`Glob`、`Grep`（`Read` 也能讀圖）。沒有其他工具——**不要嘗試 `Bash` 或任何其他工具**。工具被拒就**不要重試**，換做法繼續。每次被拒重試都在浪費你寫出輸出檔所需的 turn。
+
 ## turn 預算（重要）
 你的 turn 數有限（預設約 30）。**寫出 `findings/{{REVIEWER}}.json` 是最重要的一步，務必在用完 turn 前完成。**
 - 不要逐一窮舉讀完每個 target 檔；先用 inventory 的 metadata（hash 找重複、referencedBy 找孤兒、lastCommitISO 找漂移）鎖定**最可疑的少數**，只深讀那些。
