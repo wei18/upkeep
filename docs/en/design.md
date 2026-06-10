@@ -110,7 +110,7 @@ Handled by `docs_staleness` (not `i18n` — `i18n` manages code-layer localizati
 - **Supported languages (up to 6)**: `en` (base), `zh-TW`, `zh-CN`, `ja`, `ko` (sixth slot reserved).
 - **Detection**: Using the base (`docs/en/<name>.md`, or root `README.md` for the README) as the reference, report "behind / missing / stale" for each `docs/<locale>/<name>.md`. Follows the §3 principle — evidence-backed (git recency: base was modified but a translation was not), does not assume "the translation is always the one that needs updating," though when the base is newer it typically indicates a lagging translation.
 - **Grouping**: The reviewer groups files by same filename across `docs/<locale>/` subdirectories (for README, the root `README.md` and all `docs/<locale>/README.md` files are treated as one group).
-- **Dogfooding**: This repo's own user-facing documentation suite (README, overview, design, plans) is fully multilingualized under `docs/<locale>/`, serving as a real-world test sample for this capability (see §10).
+- **Dogfooding**: This repo's own user-facing documentation suite (README, overview, design, why-reusable-workflow, plans) is fully multilingualized under `docs/<locale>/`, serving as a real-world test sample for this capability (see §10).
 
 ---
 
@@ -219,7 +219,7 @@ repo-audit-action/                   # local directory (published name: Upkeep)
 ├── README.md                        # English base usage (job-level uses: example, secret/permissions) + language switcher
 ├── docs/
 │   ├── en/      no README (root is en); overview.md  design.md  why-reusable-workflow.md  plans/
-│   ├── zh-TW/   README.md  overview.md  design.md  plans/
+│   ├── zh-TW/   README.md  overview.md  design.md  why-reusable-workflow.md  plans/
 │   ├── zh-CN/ … ja/ … ko/   (one set per language, same as above)
 │   └── (all multilingual user docs under docs/<locale>/; root README.md is the en base)
 ├── reviewers/<locale>/              # 7 built-in rubrics + _reviewer-prompt + _synthesis-prompt, per locale (en, zh-TW); picked by rubric_lang

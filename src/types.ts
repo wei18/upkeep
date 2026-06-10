@@ -6,6 +6,9 @@ export type Severity = typeof SEVERITIES[number];
 export const SEVERITY_RANK: Record<Severity, number> =
   Object.fromEntries(SEVERITIES.map((s, i) => [s, i])) as Record<Severity, number>;
 
+/** Membership set for validating severity/confidence/priority values (shared by findings/synthesis validators). */
+export const SEVERITY_LEVELS = new Set<string>(SEVERITIES);
+
 export const REVIEWER_NAMES = [
   'docs_staleness', 'code_hygiene', 'spec_flow',
   'visual_icon', 'duplicate_orphan', 'convention', 'i18n',

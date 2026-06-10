@@ -110,7 +110,7 @@
 - **지원 언어 (최대 6개)**: `en`(base), `zh-TW`, `zh-CN`, `ja`, `ko` (6번째 예약).
 - **감지**: base (`docs/en/<name>.md`, README의 경우 루트 `README.md`)를 기준으로 각 `docs/<locale>/<name>.md`에 대해 "뒤처짐/누락/노후화"를 보고합니다. §3 원칙을 따릅니다——증거 첨부 (git 최근성: base가 변경되었지만 특정 언어 번역본이 갱신되지 않은 경우), "번역이 반드시 업데이트해야 하는 쪽"이라고 단정하지 않습니다. 단, base가 더 최신인 경우 일반적으로 번역이 뒤처진 것으로 판단하는 경향이 있습니다.
 - **그룹화**: reviewer는 "동일 파일명이 `docs/<locale>/` 하위 디렉터리에 걸쳐 존재하는" 방식으로 그룹화합니다 (README는 루트 `README.md`와 `docs/<locale>/README.md`를 동일 그룹으로 처리).
-- **Dogfood**: 본 저장소 자체의 모든 사용자 문서 (README, overview, design, plans)를 `docs/<locale>/`에 다국어화하여, 동시에 이 기능의 실제 테스트 샘플로 활용합니다 (§10 참조).
+- **Dogfood**: 본 저장소 자체의 모든 사용자 문서 (README, overview, design, why-reusable-workflow, plans)를 `docs/<locale>/`에 다국어화하여, 동시에 이 기능의 실제 테스트 샘플로 활용합니다 (§10 참조).
 
 ---
 
@@ -219,7 +219,7 @@ repo-audit-action/                   # 로컬 디렉터리（발행명 Upkeep）
 ├── README.md                        # 영어 base 사용법（job-level uses: 예시, secret/권한）+ 언어 전환 목록
 ├── docs/
 │   ├── en/      README 없음（루트가 en); overview.md  design.md  why-reusable-workflow.md  plans/
-│   ├── zh-TW/   README.md  overview.md  design.md  plans/
+│   ├── zh-TW/   README.md  overview.md  design.md  why-reusable-workflow.md  plans/
 │   ├── zh-CN/ … ja/ … ko/   （각 언어별 동일 구성）
 │   └── （다국어 사용자 문서는 모두 docs/<locale>/; 루트 README.md는 en base）
 ├── reviewers/<locale>/              # 7개 내장 rubric + _reviewer-prompt + _synthesis-prompt, 로케일별(en, zh-TW); rubric_lang으로 선택

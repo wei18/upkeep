@@ -12,7 +12,12 @@ const DOMAINS: Record<ReviewerName, Category[]> = {
   visual_icon: ['visual', 'icon'],
   duplicate_orphan: ALL,
   convention: ALL,
-  i18n: [], // 空 placeholder：i18n 只管 code 層在地化字串（design §2.1），該分類待 Plan 4；留空確保啟用時不與 docs_staleness 的多語 doc 範疇重疊
+  i18n: [], // i18n 只管 code 層在地化字串（design §2/§2.1），無對應 file category；target 由 DEFAULT_PATHS 的 glob 決定，不與 docs_staleness 的多語 doc 範疇重疊
+};
+
+// 無 category 對應的 reviewer 之預設 target globs（audit.yml 的 reviewers.<name>.paths 優先）
+const DEFAULT_PATHS: Partial<Record<ReviewerName, string[]>> = {
+  i18n: ['**/*.lproj/**', '**/*.strings', '**/*.stringsdict', '**/*.xcstrings', '**/locales/**', '**/i18n/**'],
 };
 
 export interface RubricBundle {
@@ -57,13 +62,18 @@ export function composeRubric(
 ): RubricBundle {
   const cats = new Set<Category>(DOMAINS[reviewer]);
   const cfg = inventory.config.reviewers[reviewer];
+  const fallbackGlobs = DEFAULT_PATHS[reviewer];
   return {
     reviewer,
     builtinRubric: join(actionRoot, 'reviewers', rubricLang, `${reviewer}.md`),
     conventionSources: inventory.conventions.map((c) => c.path),
     explicitRubric: cfg?.rubric ?? null,
     targetFiles: inventory.files
-      .filter((f) => (cfg?.paths && cfg.paths.length > 0 ? matchesAny(f.path, cfg.paths) : cats.has(f.category)))
+      .filter((f) => (cfg?.paths && cfg.paths.length > 0
+        ? matchesAny(f.path, cfg.paths)
+        : fallbackGlobs
+          ? matchesAny(f.path, fallbackGlobs)
+          : cats.has(f.category)))
       .map((f) => f.path),
   };
 }

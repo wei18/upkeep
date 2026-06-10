@@ -1,7 +1,5 @@
 // src/synthesis.ts
-import { SEVERITIES } from './types.js';
-
-const LEVELS = new Set<string>(SEVERITIES);
+import { SEVERITY_LEVELS as LEVELS } from './types.js';
 
 export function validateSynthesisOutput(input: unknown): { valid: boolean; errors: string[] } {
   const errors: string[] = [];

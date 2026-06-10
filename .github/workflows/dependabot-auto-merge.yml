@@ -22,9 +22,9 @@ jobs:
         if: steps.meta.outputs.update-type == 'version-update:semver-major'
         run: echo "Major bump (${{ steps.meta.outputs.dependency-names }}) — leaving open for manual review."
 
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         if: steps.meta.outputs.update-type != 'version-update:semver-major'
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v6
         if: steps.meta.outputs.update-type != 'version-update:semver-major'
         with:
           node-version: '20'

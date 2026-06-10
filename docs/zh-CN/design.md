@@ -110,7 +110,7 @@ repo 有自己的标准时优先使用 repo 的。`convention` 几乎全靠 repo
 - **支持语言（最多 6）**：`en`(base)、`zh-TW`、`zh-CN`、`ja`、`ko`（预留第 6）。
 - **检测**：以 base（`docs/en/<name>.md`，README 则为根 `README.md`）为对照，对每个 `docs/<locale>/<name>.md` 报告「落后/缺漏/过时」。沿用 §3 原则——附证据（git 近期度：base 改了但某语译本没跟进），不预设「翻译一定是该更新的那方」，但 base 较新时通常倾向翻译落后。
 - **分组**：reviewer 由「同名文件跨 `docs/<locale>/` 子目录」分组（README 另把根 `README.md` 与 `docs/<locale>/README.md` 视为同组）。
-- **Dogfood**：本 repo 自身全套用户文档（README、overview、design、plans）均多语化于 `docs/<locale>/`，同时作为此能力的真实测试样本（见 §10）。
+- **Dogfood**：本 repo 自身全套用户文档（README、overview、design、why-reusable-workflow、plans）均多语化于 `docs/<locale>/`，同时作为此能力的真实测试样本（见 §10）。
 
 ---
 
@@ -219,7 +219,7 @@ repo-audit-action/                   # 本地目录（发布名 Upkeep）
 ├── README.md                        # 英文 base 用法（job 级 uses: 示例、secret/权限）+ 语言切换列
 ├── docs/
 │   ├── en/      README 无（根即 en）；overview.md  design.md  why-reusable-workflow.md  plans/
-│   ├── zh-TW/   README.md  overview.md  design.md  plans/
+│   ├── zh-TW/   README.md  overview.md  design.md  why-reusable-workflow.md  plans/
 │   ├── zh-CN/ … ja/ … ko/   （同上各语一套）
 │   └── （多语用户文档一律 docs/<locale>/；root README.md 为 en base）
 ├── reviewers/<locale>/              # 7 位内置 rubric + _reviewer-prompt + _synthesis-prompt，按语系分置（en、zh-TW）；由 rubric_lang 选择

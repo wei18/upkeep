@@ -30,7 +30,8 @@ export function classify(path: string, content: Buffer): { modality: Modality; c
   const segs = lower.split('/');
   const isSpecPath = segs.some((s) => s === 'spec' || s === 'specs');
   let category: Category;
-  if (name.includes('icon') || ext === '.icns' || ext === '.ico') category = 'icon';
+  // icon 名稱規則僅適用於影像資產，避免 visual_icon.md 等文字檔被誤分類
+  if (ext === '.icns' || ext === '.ico' || ((RASTER.has(ext) || ext === '.svg') && name.includes('icon'))) category = 'icon';
   else if (modality === 'raster_image') category = 'visual';
   else if (isSpecPath) category = 'spec'; // 路徑含 spec/specs 區段；避免 *.spec.ts 誤判
   else if (/(?:^|[-_])flow(?:[-_.]|$)/.test(name)) category = 'flow'; // 明確 flow 命名（任何副檔名）

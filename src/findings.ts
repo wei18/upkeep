@@ -1,8 +1,7 @@
 // src/findings.ts
-import { REVIEWER_NAMES, SEVERITIES, FINDING_CATEGORIES, SSOT_DIRECTIONS } from './types.js';
+import { REVIEWER_NAMES, SEVERITY_LEVELS as LEVELS, FINDING_CATEGORIES, SSOT_DIRECTIONS } from './types.js';
 
 const REVIEWERS = new Set<string>(REVIEWER_NAMES);
-const LEVELS = new Set<string>(SEVERITIES);
 const CATEGORIES = new Set<string>(FINDING_CATEGORIES);
 const SSOT = new Set<string>(SSOT_DIRECTIONS);
 

@@ -51,4 +51,22 @@ describe('composeRubric', () => {
     const i = inv([file('a.ts', 'code'), file('b.png', 'visual'), file('c.md', 'doc')]);
     expect(composeRubric('duplicate_orphan', i, '/action').targetFiles.length).toBe(3);
   });
+
+  it('i18n targets localization assets by default globs (design §2), not docs', () => {
+    const i = inv([
+      file('App/zh-TW.lproj/Localizable.strings', 'other'),
+      file('web/locales/ja.json', 'config'),
+      file('docs/zh-TW/README.md', 'doc'),
+      file('src/a.ts', 'code'),
+    ]);
+    expect(composeRubric('i18n', i, '/action').targetFiles.sort())
+      .toEqual(['App/zh-TW.lproj/Localizable.strings', 'web/locales/ja.json']);
+  });
+
+  it('explicit paths override i18n default globs', () => {
+    const cfg = defaultConfig();
+    cfg.reviewers.i18n.paths = ['translations/**'];
+    const i = inv([file('translations/de.yml', 'config'), file('web/locales/ja.json', 'config')], { config: cfg });
+    expect(composeRubric('i18n', i, '/action').targetFiles).toEqual(['translations/de.yml']);
+  });
 });

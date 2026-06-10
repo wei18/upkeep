@@ -57,4 +57,11 @@ describe('classify', () => {
   it('"icon" in a directory name does not make a file an icon', () => {
     expect(classify('src/iconography/util.ts', txt('x')).category).toBe('code');
   });
+  it('"icon" in a non-image filename does not make a file an icon', () => {
+    expect(classify('reviewers/en/visual_icon.md', txt('# rubric')).category).toBe('doc');
+    expect(classify('src/icon-utils.ts', txt('x')).category).toBe('code');
+  });
+  it('icon-named svg is an icon', () => {
+    expect(classify('assets/app-icon.svg', txt('<svg/>')).category).toBe('icon');
+  });
 });
