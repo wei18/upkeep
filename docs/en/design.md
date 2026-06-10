@@ -226,9 +226,9 @@ repo-audit-action/                   # local directory (published name: Upkeep)
 │   ├── zh-TW/   README.md  overview.md  design.md  why-reusable-workflow.md  plans/
 │   ├── zh-CN/ … ja/ … ko/   (one set per language, same as above)
 │   └── (all multilingual user docs under docs/<locale>/; root README.md is the en base)
+├── reviewers/<locale>/              # 7 built-in rubrics + _reviewer-prompt + _synthesis-prompt, per locale (en, zh-TW); picked by rubric_lang
 ├── skills/upkeep-audit/             # Claude Code skill: thin local-run wrapper (clones to ~/.cache/upkeep)
 ├── scripts/local-audit.sh           # local pipeline orchestrator (same flow as CI; temp-dir intermediates)
-├── reviewers/<locale>/              # 7 built-in rubrics + _reviewer-prompt + _synthesis-prompt, per locale (en, zh-TW); picked by rubric_lang
 ├── src/                             # deterministic TS: discovery/consolidate/report/matrix/prompt-bundle, etc.
 └── test/                            # unit + contract + e2e (samples in §10)
 ```

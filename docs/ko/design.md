@@ -72,7 +72,7 @@
 
 ### 로컬 실행 (skill / 스크립트)
 
-동일한 파이프라인을 `scripts/local-audit.sh <target>`로 로컬에서 실행할 수 있다: discovery → 병렬 `claude -p` 리뷰어 서브프로세스 → synthesis → report. 모든 중간 산출물(inventory, prompts, findings, synthesis)은 `mktemp` 작업 디렉터리에 두고 `--add-dir`로 Claude에 권한을 부여한다 — 대상 저장소에는 아무것도 쓰지 않는다. 로컬 실행도 동일한 self-contained HTML 리포트를 생성하며, GitHub issue를 upsert하는 대신 issue markdown을 터미널 요약으로 출력한다. `skills/upkeep-audit/SKILL.md`는 이 스크립트의 얇은 Claude Code 래퍼로, `~/.cache/upkeep` 클론을 유지하고 감사를 실행한 뒤 findings를 채팅으로 요약한다.
+동일한 파이프라인을 `scripts/local-audit.sh <target>`로 로컬에서 실행할 수 있다: discovery → 병렬 `claude -p` 리뷰어 서브프로세스 → synthesis → report. 모든 중간 산출물(inventory, prompts, findings, synthesis)은 `mktemp` 작업 디렉터리에 두고 `--add-dir`로 Claude에 권한을 부여한다 — 대상 저장소에는 아무것도 쓰지 않는다. 로컬 실행도 동일한 self-contained HTML 리포트를 생성하며, GitHub 이슈를 upsert하는 대신 이슈 markdown을 터미널 요약으로 출력한다. `skills/upkeep-audit/SKILL.md`는 이 스크립트의 얇은 Claude Code 래퍼로, `~/.cache/upkeep` 클론을 유지하고 감사를 실행한 뒤 findings를 채팅으로 요약한다.
 
 ---
 
@@ -226,9 +226,9 @@ repo-audit-action/                   # 로컬 디렉터리（발행명 Upkeep）
 │   ├── zh-TW/   README.md  overview.md  design.md  why-reusable-workflow.md  plans/
 │   ├── zh-CN/ … ja/ … ko/   （각 언어별 동일 구성）
 │   └── （다국어 사용자 문서는 모두 docs/<locale>/; 루트 README.md는 en base）
+├── reviewers/<locale>/              # 7개 내장 rubric + _reviewer-prompt + _synthesis-prompt, 로케일별(en, zh-TW); rubric_lang으로 선택
 ├── skills/upkeep-audit/             # Claude Code skill: 로컬 실행용 얇은 래퍼 (~/.cache/upkeep에 clone)
 ├── scripts/local-audit.sh           # 로컬 pipeline 오케스트레이터 (CI와 동일한 플로우; 중간 산출물은 임시 디렉터리)
-├── reviewers/<locale>/              # 7개 내장 rubric + _reviewer-prompt + _synthesis-prompt, 로케일별(en, zh-TW); rubric_lang으로 선택
 ├── src/                             # discovery/consolidate/report/matrix/prompt-bundle 등 확정적 TS
 └── test/                            # 단위 + 계약 + e2e（테스트 샘플: §10 참조）
 ```

@@ -72,7 +72,7 @@
 
 ### 本地执行（skill / 脚本）
 
-同一套 pipeline 可通过 `scripts/local-audit.sh <target>` 在本地执行：discovery → 并行 `claude -p` reviewer 子进程 → synthesis → report。所有中间产物（inventory、prompts、findings、synthesis）都放在 `mktemp` 工作目录，通过 `--add-dir` 授权给 Claude——不会写入目标 repo。本地执行产出同一份独立的 HTML 报告；不会 upsert GitHub issue，而是把 issue markdown 打印出来作为终端摘要。`skills/upkeep-audit/SKILL.md` 是包装此脚本的 Claude Code 薄包装：维护 `~/.cache/upkeep` 的 clone、执行审计、在对话中总结 findings。
+同一套 pipeline 可通过 `scripts/local-audit.sh <target>` 在本地执行：discovery → 并行 `claude -p` reviewer 子进程 → synthesis → report。所有中间产物（inventory、prompts、findings、synthesis）都放在 `mktemp` 工作目录，通过 `--add-dir` 授权给 Claude——不会写入目标 repo。本地执行产出同一份 self-contained HTML 报告；不会 upsert GitHub issue，而是把 issue markdown 打印出来作为终端摘要。`skills/upkeep-audit/SKILL.md` 是包装此脚本的 Claude Code 薄包装：维护 `~/.cache/upkeep` 的 clone、执行审计、在对话中总结 findings。
 
 ---
 
@@ -226,9 +226,9 @@ repo-audit-action/                   # 本地目录（发布名 Upkeep）
 │   ├── zh-TW/   README.md  overview.md  design.md  why-reusable-workflow.md  plans/
 │   ├── zh-CN/ … ja/ … ko/   （同上各语一套）
 │   └── （多语用户文档一律 docs/<locale>/；root README.md 为 en base）
+├── reviewers/<locale>/              # 7 位内置 rubric + _reviewer-prompt + _synthesis-prompt，按语系分置（en、zh-TW）；由 rubric_lang 选择
 ├── skills/upkeep-audit/             # Claude Code skill：本地执行薄包装（clone 到 ~/.cache/upkeep）
 ├── scripts/local-audit.sh           # 本地 pipeline 协调器（与 CI 同流程；中间产物放临时目录）
-├── reviewers/<locale>/              # 7 位内置 rubric + _reviewer-prompt + _synthesis-prompt，按语系分置（en、zh-TW）；由 rubric_lang 选择
 ├── src/                             # discovery/consolidate/report/matrix/prompt-bundle 等确定性 TS
 └── test/                            # 单元 + 契约 + e2e（样本见 §10）
 ```
