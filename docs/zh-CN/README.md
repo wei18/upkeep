@@ -70,11 +70,11 @@ jobs:
 
 ## 本地执行
 
-同一套审查 pipeline 也能直接在你的电脑上跑——不需要 GitHub Actions、secrets 或任何 GitHub 权限。
+同一套审计 pipeline 也能直接在你的电脑上跑——不需要 GitHub Actions、secrets 或任何 GitHub 权限。
 
 **通过 Claude Code skill** — 把 [`skills/upkeep-audit/`](../../skills/upkeep-audit/) 复制到 `~/.claude/skills/`，然后在任何 Claude Code session 里说：
 
-> 用 upkeep 检查 /path/to/repo
+> 用 upkeep 审计 /path/to/repo
 
 skill 首次执行时会自动把 Upkeep clone 到 `~/.cache/upkeep` 并安装依赖。
 
@@ -95,7 +95,7 @@ cd ~/.cache/upkeep && npm ci
 
 **要求**：已登录的 `claude` CLI（Pro/Max 订阅；不需要 `setup-token`，也不需要 GitHub 访问权限）、Node 20+、git。
 
-**输出**：同一份自包含的 `report.html` 加上终端摘要。本地执行不会创建 GitHub issue。
+**输出**：同一份独立的 HTML 报告（默认为 `upkeep-report.html`）加上终端摘要。本地执行不会创建 GitHub issue。
 
 ## 审查器
 

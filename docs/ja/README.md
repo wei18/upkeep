@@ -70,9 +70,9 @@ jobs:
 
 ## ローカル実行
 
-同じ監査パイプラインはあなたのマシン上でも実行できます — GitHub Actions も secrets も GitHub 権限も不要です。
+同じ監査パイプラインを手元のマシンでも実行できます — GitHub Actions も secrets も GitHub 権限も不要です。
 
-**Claude Code skill で実行** — [`skills/upkeep-audit/`](../../skills/upkeep-audit/) を `~/.claude/skills/` にコピーし、任意の Claude Code セッションでこう頼みます：
+**Claude Code skill で実行** — [`skills/upkeep-audit/`](../../skills/upkeep-audit/) を `~/.claude/skills/` にコピーし、任意の Claude Code セッションで次のように依頼します：
 
 > upkeep で /path/to/repo を監査して
 
@@ -95,7 +95,7 @@ cd ~/.cache/upkeep && npm ci
 
 **要件**：ログイン済みの `claude` CLI（Pro/Max サブスクリプション。`setup-token` も GitHub アクセスも不要）、Node 20+、git。
 
-**出力**：同じ自己完結型の `report.html` とターミナルサマリー。ローカル実行では GitHub issue は作成されません。
+**出力**：同じ独立した HTML レポート（デフォルトでは `upkeep-report.html`）とターミナルサマリー。ローカル実行では GitHub issue は作成されません。
 
 ## レビュアー
 

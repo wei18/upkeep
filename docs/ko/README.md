@@ -72,11 +72,11 @@ jobs:
 
 동일한 감사 파이프라인을 당신의 머신에서도 실행할 수 있습니다 — GitHub Actions, secrets, GitHub 권한이 모두 필요 없습니다.
 
-**Claude Code skill 로 실행** — [`skills/upkeep-audit/`](../../skills/upkeep-audit/) 를 `~/.claude/skills/` 에 복사한 뒤, 아무 Claude Code 세션에서 이렇게 요청하세요:
+**Claude Code skill로 실행** — [`skills/upkeep-audit/`](../../skills/upkeep-audit/)를 `~/.claude/skills/`에 복사한 뒤, 아무 Claude Code 세션에서 이렇게 요청하세요:
 
-> upkeep 으로 /path/to/repo 를 감사해 줘
+> upkeep으로 /path/to/repo를 감사해 줘
 
-첫 실행 시 skill 이 Upkeep 을 `~/.cache/upkeep` 에 자동으로 clone 하고 의존성을 설치합니다.
+첫 실행 시 skill이 Upkeep을 `~/.cache/upkeep`에 자동으로 clone 하고 의존성을 설치합니다.
 
 **스크립트 직접 실행** (Claude Code 세션 불필요):
 
@@ -95,7 +95,7 @@ cd ~/.cache/upkeep && npm ci
 
 **요구 사항**: 로그인된 `claude` CLI (Pro/Max 구독; `setup-token` 도 GitHub 접근 권한도 필요 없음), Node 20+, git.
 
-**출력**: 동일한 자체 완결형 `report.html` 과 터미널 요약. 로컬 실행은 GitHub issue 를 만들지 않습니다.
+**출력**: 동일한 독립 실행형 HTML 리포트(기본값 `upkeep-report.html`)와 터미널 요약. 로컬 실행은 GitHub issue를 만들지 않습니다.
 
 ## 리뷰어
 

@@ -70,13 +70,13 @@ jobs:
 
 ## 本機執行
 
-同一套審查 pipeline 也能直接在你的電腦上跑——不需要 GitHub Actions、secrets 或任何 GitHub 權限。
+同一套稽核 pipeline 也能直接在你的電腦上跑——不需要 GitHub Actions、secrets 或任何 GitHub 權限。
 
 **透過 Claude Code skill** — 把 [`skills/upkeep-audit/`](../../skills/upkeep-audit/) 複製到 `~/.claude/skills/`，然後在任何 Claude Code session 說：
 
-> 用 upkeep 檢查 /path/to/repo
+> 用 upkeep 稽核 /path/to/repo
 
-skill 首次執行時會自動把 Upkeep clone 到 `~/.cache/upkeep` 並安裝依賴。
+skill 首次執行時會自動把 Upkeep clone 到 `~/.cache/upkeep` 並安裝相依套件。
 
 **直接跑腳本**（不需要 Claude Code session）：
 
@@ -95,7 +95,7 @@ cd ~/.cache/upkeep && npm ci
 
 **需求**：已登入的 `claude` CLI（Pro/Max 訂閱；不需要 `setup-token`，也不需要 GitHub 存取權）、Node 20+、git。
 
-**輸出**：同一份自包含的 `report.html` 加上終端機摘要。本機執行不會建立 GitHub issue。
+**輸出**：同一份自包含的 HTML 報告（預設為 `upkeep-report.html`）加上終端機摘要。本機執行不會建立 GitHub issue。
 
 ## 審查員
 

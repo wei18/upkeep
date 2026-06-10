@@ -95,7 +95,7 @@ cd ~/.cache/upkeep && npm ci
 
 **Requirements:** a logged-in `claude` CLI (Pro/Max; no `setup-token` and no GitHub access needed), Node 20+, git.
 
-**Output:** the same self-contained `report.html` plus a terminal summary. Local runs never create GitHub issues.
+**Output:** the same self-contained HTML report (`upkeep-report.html` by default) plus a terminal summary. Local runs never create GitHub issues.
 
 ## Reviewers
 
