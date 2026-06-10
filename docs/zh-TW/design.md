@@ -70,6 +70,10 @@
 - **無 LLM lead**：編排＝GHA workflow（matrix）＋ Node。Review 階段各 reviewer 完全獨立（不需互通）；跨領域綜觀由 Synthesis 這個 reduce step 達成。
 - findings 用統一 schema，讓 Synthesis 與 Consolidate 都能機械化處理。
 
+### 本機執行（skill / 腳本）
+
+同一套 pipeline 可透過 `scripts/local-audit.sh <target>` 在本機執行：discovery → 平行 `claude -p` reviewer 子程序 → synthesis → report。所有中間產物（inventory、prompts、findings、synthesis）都放在 `mktemp` 工作目錄，透過 `--add-dir` 授權給 Claude——不會寫入目標 repo。本機執行產出同一份自包含的 HTML 報告；不會 upsert GitHub issue，而是把 issue markdown 印出作為終端機摘要。`skills/upkeep-audit/SKILL.md` 是包裝此腳本的 Claude Code 薄包裝：維護 `~/.cache/upkeep` 的 clone、執行稽核、在對話中摘要 findings。
+
 ---
 
 ## 2. Reviewer 團隊
@@ -222,6 +226,8 @@ repo-audit-action/                   # 本地目錄（發佈名 Upkeep）
 │   ├── zh-TW/   README.md  overview.md  design.md  why-reusable-workflow.md  plans/
 │   ├── zh-CN/ … ja/ … ko/   （同上各語一套）
 │   └── （多語使用者文件一律 docs/<locale>/；root README.md 為 en base）
+├── skills/upkeep-audit/             # Claude Code skill：本機執行薄包裝（clone 到 ~/.cache/upkeep）
+├── scripts/local-audit.sh           # 本機 pipeline 協調器（與 CI 同流程；中間產物放暫存目錄）
 ├── reviewers/<locale>/              # 7 位內建 rubric + _reviewer-prompt + _synthesis-prompt，依語系分置（en、zh-TW）；由 rubric_lang 選擇
 ├── src/                             # discovery/consolidate/report/matrix/prompt-bundle 等確定性 TS
 └── test/                            # 單元 + 契約 + e2e（樣本見 §10）
