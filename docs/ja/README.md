@@ -68,6 +68,35 @@ jobs:
 - `audit` ラベル付きの GitHub issue — 毎回同じ issue が更新（upsert）され、重複は作成されません。
 - `report-html` workflow artifact としてアップロードされる独立した HTML レポート。トラッキング issue から直接リンクされます。それ以外では、その run の **Artifacts**（Actions → 該当 run）から、または `gh run download <run-id> -n report-html` で取得できます。GitHub の artifact はダウンロード可能な zip で、リポジトリの保持設定に従って期限切れになります。
 
+## ローカル実行
+
+同じ監査パイプラインはあなたのマシン上でも実行できます — GitHub Actions も secrets も GitHub 権限も不要です。
+
+**Claude Code skill で実行** — [`skills/upkeep-audit/`](../../skills/upkeep-audit/) を `~/.claude/skills/` にコピーし、任意の Claude Code セッションでこう頼みます：
+
+> upkeep で /path/to/repo を監査して
+
+初回実行時、skill は Upkeep を `~/.cache/upkeep` に自動で clone し、依存関係をインストールします。
+
+**スクリプトを直接実行**（Claude Code セッション不要）：
+
+```bash
+git clone --depth 1 https://github.com/wei18/upkeep ~/.cache/upkeep
+cd ~/.cache/upkeep && npm ci
+./scripts/local-audit.sh /path/to/repo --out ~/upkeep-report.html
+```
+
+| フラグ | デフォルト | 対応する CI input |
+|---|---|---|
+| `--model` | `claude-opus-4-8` | `model` |
+| `--rubric-lang` | `en` | `rubric_lang` |
+| `--max-turns` | `30` | `max_turns` |
+| `--out` | `./upkeep-report.html` | report artifact |
+
+**要件**：ログイン済みの `claude` CLI（Pro/Max サブスクリプション。`setup-token` も GitHub アクセスも不要）、Node 20+、git。
+
+**出力**：同じ自己完結型の `report.html` とターミナルサマリー。ローカル実行では GitHub issue は作成されません。
+
 ## レビュアー
 
 | 名前 | デフォルト | チェック内容 |

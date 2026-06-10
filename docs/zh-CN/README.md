@@ -68,6 +68,35 @@ jobs:
 - 一个标记为 `audit` 的 GitHub issue — 每次运行时更新同一个 issue（upsert），不重复创建。
 - 一个独立 HTML 报告，作为 `report-html` workflow artifact 上传。跟踪 issue 会直接链接到它；否则可在该次 run 的 **Artifacts**（Actions → 那次 run）找到，或用 `gh run download <run-id> -n report-html` 下载。GitHub 的 artifact 是可下载的 zip，并按你仓库的保留设置过期。
 
+## 本地执行
+
+同一套审查 pipeline 也能直接在你的电脑上跑——不需要 GitHub Actions、secrets 或任何 GitHub 权限。
+
+**通过 Claude Code skill** — 把 [`skills/upkeep-audit/`](../../skills/upkeep-audit/) 复制到 `~/.claude/skills/`，然后在任何 Claude Code session 里说：
+
+> 用 upkeep 检查 /path/to/repo
+
+skill 首次执行时会自动把 Upkeep clone 到 `~/.cache/upkeep` 并安装依赖。
+
+**直接跑脚本**（不需要 Claude Code session）：
+
+```bash
+git clone --depth 1 https://github.com/wei18/upkeep ~/.cache/upkeep
+cd ~/.cache/upkeep && npm ci
+./scripts/local-audit.sh /path/to/repo --out ~/upkeep-report.html
+```
+
+| 参数 | 默认值 | 对应 CI input |
+|---|---|---|
+| `--model` | `claude-opus-4-8` | `model` |
+| `--rubric-lang` | `en` | `rubric_lang` |
+| `--max-turns` | `30` | `max_turns` |
+| `--out` | `./upkeep-report.html` | report artifact |
+
+**要求**：已登录的 `claude` CLI（Pro/Max 订阅；不需要 `setup-token`，也不需要 GitHub 访问权限）、Node 20+、git。
+
+**输出**：同一份自包含的 `report.html` 加上终端摘要。本地执行不会创建 GitHub issue。
+
 ## 审查器
 
 | 名称 | 默认状态 | 检查内容 |

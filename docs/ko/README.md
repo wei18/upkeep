@@ -68,6 +68,35 @@ jobs:
 - `audit` 레이블이 붙은 GitHub 이슈 — 매 실행마다 동일한 이슈가 업데이트됩니다(upsert). 중복 생성되지 않습니다.
 - `report-html` workflow artifact로 업로드되는 독립 실행형 HTML 보고서. 추적 이슈에서 바로 링크됩니다. 그 외에는 해당 run의 **Artifacts**(Actions → 해당 run)에서 찾거나 `gh run download <run-id> -n report-html`으로 받을 수 있습니다. GitHub artifact는 다운로드 가능한 zip이며, 저장소의 보존 설정에 따라 만료됩니다.
 
+## 로컬 실행
+
+동일한 감사 파이프라인을 당신의 머신에서도 실행할 수 있습니다 — GitHub Actions, secrets, GitHub 권한이 모두 필요 없습니다.
+
+**Claude Code skill 로 실행** — [`skills/upkeep-audit/`](../../skills/upkeep-audit/) 를 `~/.claude/skills/` 에 복사한 뒤, 아무 Claude Code 세션에서 이렇게 요청하세요:
+
+> upkeep 으로 /path/to/repo 를 감사해 줘
+
+첫 실행 시 skill 이 Upkeep 을 `~/.cache/upkeep` 에 자동으로 clone 하고 의존성을 설치합니다.
+
+**스크립트 직접 실행** (Claude Code 세션 불필요):
+
+```bash
+git clone --depth 1 https://github.com/wei18/upkeep ~/.cache/upkeep
+cd ~/.cache/upkeep && npm ci
+./scripts/local-audit.sh /path/to/repo --out ~/upkeep-report.html
+```
+
+| 플래그 | 기본값 | 대응 CI input |
+|---|---|---|
+| `--model` | `claude-opus-4-8` | `model` |
+| `--rubric-lang` | `en` | `rubric_lang` |
+| `--max-turns` | `30` | `max_turns` |
+| `--out` | `./upkeep-report.html` | report artifact |
+
+**요구 사항**: 로그인된 `claude` CLI (Pro/Max 구독; `setup-token` 도 GitHub 접근 권한도 필요 없음), Node 20+, git.
+
+**출력**: 동일한 자체 완결형 `report.html` 과 터미널 요약. 로컬 실행은 GitHub issue 를 만들지 않습니다.
+
 ## 리뷰어
 
 | 이름 | 기본값 | 검사 항목 |
