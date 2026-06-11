@@ -60,6 +60,9 @@ Banner（標語不變）
 → How it compares（保留）
 → Run as plain script（原 Run locally 的 script 段落；手動 copy skill 改為 fallback 一句帶過）
 → Automate it in CI（原 Usage 章節整段搬移，範例改 @v2）
+   ※ 架構不變：GHA workflow 直接跑 pipeline，不經過 skill。skill 與 workflow
+     是同一引擎的兩個平行入口，「主角化」僅是 README 敘事與安裝順序的改變。
+     文案可寫「the same audit crew, on a schedule」。
 → Reviewers / Configuration / Docs（保留）
 ```
 
