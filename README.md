@@ -25,6 +25,8 @@
 npx skills add wei18/upkeep --skill upkeep-audit
 ```
 
+**Requirements:** a logged-in `claude` CLI (Pro/Max), Node 20+, git — the engine runs on your machine in every install mode.
+
 Then ask in any session:
 
 > Run an upkeep audit on /path/to/repo
@@ -130,7 +132,7 @@ jobs:
 
 There are two separate configuration surfaces, by design:
 
-- **Workflow inputs** (the caller's `with:` block above) control *how the engine runs*: `model`, `max_turns`, `issue_label`, `rubric_lang`.
+- **Workflow inputs** (the caller's `with:` block above; locally, the equivalent script flags) control *how the engine runs*: `model`, `max_turns`, `issue_label`, `rubric_lang`.
 - **`.claude/audit.yml`** (committed in the audited repo) controls *what gets audited*: which reviewers are enabled, per-reviewer rubric overrides, and `report.minSeverity`. Reviewer enablement lives here — not as a workflow input — because it is a per-repo policy that should evolve with the repo.
 
 Everything is optional. To turn on the off-by-default `i18n` reviewer, for example:
@@ -148,4 +150,4 @@ See [`docs/design.md`](docs/en/design.md) for the full schema and options.
 
 - [`docs/overview.md`](docs/en/overview.md) — how the pipeline works
 - [`docs/design.md`](docs/en/design.md) — full design reference
-- [`docs/why-reusable-workflow.md`](docs/en/why-reusable-workflow.md) — why it's a reusable workflow, not a `- uses:` step action
+- [`docs/why-reusable-workflow.md`](docs/en/why-reusable-workflow.md) — why the CI layer is a reusable workflow, not a `- uses:` step action
