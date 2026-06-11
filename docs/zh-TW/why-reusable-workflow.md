@@ -12,7 +12,7 @@ Upkeep 則是以 **job** 形式使用，指向一個 workflow 檔：
 ```yaml
 jobs:
   audit:
-    uses: wei18/upkeep/.github/workflows/audit.yml@v1
+    uses: wei18/upkeep/.github/workflows/audit.yml@v2
 ```
 
 第二種寫法相較於常見的 `- uses: owner/action@v1` 顯得陌生，會被問為什麼。它其實是 **reusable workflow**（`on: workflow_call`）標準、官方文件記載的語法——見 [GitHub: Reuse workflows](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows)。以下說明 Upkeep 為何這樣設計。

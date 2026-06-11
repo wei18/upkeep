@@ -9,7 +9,7 @@
 
 ## 0. 목표
 
-**재사용 가능한 GitHub Workflow(`on: workflow_call`)**로, 어떤 저장소든 자신의 workflow에서 job 수준의 `uses: wei18/upkeep/.github/workflows/audit.yml@v1`로 참조할 수 있습니다. 저장소 내 콘텐츠를 스캔하고 각자 전문 영역을 가진 subagent reviewer 집합을 파견하여, 데이터(코드 / 문서 / 스펙 / 시각 자료 / 아이콘 / 플로우 등)가 다음 기준을 충족하는지 검사합니다:
+**재사용 가능한 GitHub Workflow(`on: workflow_call`)**로, 어떤 저장소든 자신의 workflow에서 job 수준의 `uses: wei18/upkeep/.github/workflows/audit.yml@v2`로 참조할 수 있습니다. 저장소 내 콘텐츠를 스캔하고 각자 전문 영역을 가진 subagent reviewer 집합을 파견하여, 데이터(코드 / 문서 / 스펙 / 시각 자료 / 아이콘 / 플로우 등)가 다음 기준을 충족하는지 검사합니다:
 
 - up-to-date (실제 코드/최근 커밋과 drift가 없는지)
 - 저장소 **자체** 규칙을 준수하는지
@@ -210,7 +210,7 @@ report:
 
 ## 6. 저장소 위치 (확정)
 
-이 action은 `uses:`로 참조 가능하도록 발행되므로 독립 저장소로 분리합니다. 로컬 디렉터리 `/Users/zw/GitHub/Wei18/repo-audit-action/` (이미 `git init`됨); **발행/패키지명은 `Upkeep`** (`uses: wei18/upkeep@v1`)——로컬 폴더명과 발행명이 다른 것은 의도적으로 유지합니다.
+이 action은 `uses:`로 참조 가능하도록 발행되므로 독립 저장소로 분리합니다. 로컬 디렉터리 `/Users/zw/GitHub/Wei18/repo-audit-action/` (이미 `git init`됨); **발행/패키지명은 `Upkeep`** (`uses: wei18/upkeep@v2`)——로컬 폴더명과 발행명이 다른 것은 의도적으로 유지합니다.
 
 예상 구조:
 
@@ -237,7 +237,7 @@ repo-audit-action/                   # 로컬 디렉터리（발행명 Upkeep）
 
 > 아카이브 참고: `docs/<locale>/plans/` 트리는 원래의 단계별 구현 계획을 의도적으로 **보관**한 것입니다(로케일마다 한 세트). 어떤 내비게이션 인덱스에서도 의도적으로 링크되지 않으며, fenced 블록(코드 및 임베드된 문서 템플릿)은 zh-TW 소스에서 **그대로** 보존됩니다 — 따라서 이 파일들의 빈 `referencedBy`와 fence 내 비영어 텍스트는 예상된 것이며 드리프트가 아닙니다.
 
-> 서브 action 메커니즘: reusable workflow의 job은 **호출 측** checkout에서 실행됩니다. Upkeep 자체 코드(src/, reviewers/)는 `uses: wei18/upkeep/.github/actions/<x>@v1`을 통해 주입됩니다 (GitHub이 자동으로 Upkeep 저장소를 가져옴). 각 reviewer는 독립적인 matrix job으로 plain `claude-code-action` 프롬프트를 실행하여 `findings/<reviewer>.json`을 작성하며, **in-run subagent가 불필요**하므로 `--agents`/`Agent` passthrough 위험이 사라집니다.
+> 서브 action 메커니즘: reusable workflow의 job은 **호출 측** checkout에서 실행됩니다. Upkeep 자체 코드(src/, reviewers/)는 `uses: wei18/upkeep/.github/actions/<x>@v2`을 통해 주입됩니다 (GitHub이 자동으로 Upkeep 저장소를 가져옴). 각 reviewer는 독립적인 matrix job으로 plain `claude-code-action` 프롬프트를 실행하여 `findings/<reviewer>.json`을 작성하며, **in-run subagent가 불필요**하므로 `--agents`/`Agent` passthrough 위험이 사라집니다.
 
 ---
 

@@ -12,7 +12,7 @@ Upkeep is consumed as a **job**, pointing at a workflow file:
 ```yaml
 jobs:
   audit:
-    uses: wei18/upkeep/.github/workflows/audit.yml@v1
+    uses: wei18/upkeep/.github/workflows/audit.yml@v2
 ```
 
 That second form looks unfamiliar next to the usual `- uses: owner/action@v1`, and people reasonably ask why. It is the standard, documented syntax for a **reusable workflow** (`on: workflow_call`) — see [GitHub: Reuse workflows](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows). Here is why Upkeep is built that way.

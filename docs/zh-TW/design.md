@@ -9,7 +9,7 @@
 
 ## 0. 目標
 
-一個**可重用 GitHub Workflow（`on: workflow_call`）**，任何 repo 在自己的 workflow 以 job-level `uses: wei18/upkeep/.github/workflows/audit.yml@v1` 引用。它掃描 repo 內容，分派一組各有專業的 subagent reviewer，檢查資料（code / doc / spec / 視覺圖 / icon / flow 等）是否：
+一個**可重用 GitHub Workflow（`on: workflow_call`）**，任何 repo 在自己的 workflow 以 job-level `uses: wei18/upkeep/.github/workflows/audit.yml@v2` 引用。它掃描 repo 內容，分派一組各有專業的 subagent reviewer，檢查資料（code / doc / spec / 視覺圖 / icon / flow 等）是否：
 
 - up-to-date（與真實程式碼/近期 commit 是否漂移）
 - 符合 repo **自身**的規範
@@ -210,7 +210,7 @@ report:
 
 ## 6. Repo 落點（已定）
 
-此 action 發佈成可被 `uses:` 引用者，故獨立成 repo。本地目錄 `/Users/zw/GitHub/Wei18/repo-audit-action/`（已 `git init`）；**發佈/套件名為 `Upkeep`**（`uses: wei18/upkeep@v1`）——本地資料夾名與發佈名不同是刻意保留。
+此 action 發佈成可被 `uses:` 引用者，故獨立成 repo。本地目錄 `/Users/zw/GitHub/Wei18/repo-audit-action/`（已 `git init`）；**發佈/套件名為 `Upkeep`**（`uses: wei18/upkeep@v2`）——本地資料夾名與發佈名不同是刻意保留。
 
 預期結構：
 
@@ -237,7 +237,7 @@ repo-audit-action/                   # 本地目錄（發佈名 Upkeep）
 
 > 封存說明：`docs/<locale>/plans/` 子樹是原始逐步實作計畫的刻意**封存**（每語一套）。它刻意不被任何導覽索引連入，且其 fenced 區塊（程式碼與嵌入的文件範本）一律保留 zh-TW 源的**逐字**內容——因此這些檔案的空 `referencedBy` 與 fence 內的非英文內容皆為預期，並非漂移。
 
-> 子 action 機制：reusable workflow 的 job 跑在**呼叫方**的 checkout；Upkeep 自身程式碼（src/、reviewers/）透過 `uses: wei18/upkeep/.github/actions/<x>@v1` 帶入（GitHub 自動抓 Upkeep repo）。每個 reviewer 是獨立 matrix job 跑一個 plain `claude-code-action` prompt（寫 `findings/<reviewer>.json`），**不需 in-run subagent**，故 `--agents`/`Agent` passthrough 風險消失。
+> 子 action 機制：reusable workflow 的 job 跑在**呼叫方**的 checkout；Upkeep 自身程式碼（src/、reviewers/）透過 `uses: wei18/upkeep/.github/actions/<x>@v2` 帶入（GitHub 自動抓 Upkeep repo）。每個 reviewer 是獨立 matrix job 跑一個 plain `claude-code-action` prompt（寫 `findings/<reviewer>.json`），**不需 in-run subagent**，故 `--agents`/`Agent` passthrough 風險消失。
 
 ---
 

@@ -9,7 +9,7 @@
 
 ## 0. Goals
 
-A **reusable GitHub Workflow (`on: workflow_call`)** that any repo can invoke at the job level via `uses: wei18/upkeep/.github/workflows/audit.yml@v1`. It scans the repo's contents, dispatches a team of specialized subagent reviewers, and checks whether the artifacts (code / docs / spec / diagrams / icons / flows / etc.) are:
+A **reusable GitHub Workflow (`on: workflow_call`)** that any repo can invoke at the job level via `uses: wei18/upkeep/.github/workflows/audit.yml@v2`. It scans the repo's contents, dispatches a team of specialized subagent reviewers, and checks whether the artifacts (code / docs / spec / diagrams / icons / flows / etc.) are:
 
 - up-to-date (no drift from the actual codebase or recent commits)
 - conformant with the repo's **own** conventions
@@ -210,7 +210,7 @@ report:
 
 ## 6. Repo Location (finalized)
 
-This action is published to be referenced via `uses:`, so it lives in its own repo. Local directory: `/Users/zw/GitHub/Wei18/repo-audit-action/` (already `git init`-ed); **published/package name is `Upkeep`** (`uses: wei18/upkeep@v1`) — the difference between the local folder name and the published name is intentional.
+This action is published to be referenced via `uses:`, so it lives in its own repo. Local directory: `/Users/zw/GitHub/Wei18/repo-audit-action/` (already `git init`-ed); **published/package name is `Upkeep`** (`uses: wei18/upkeep@v2`) — the difference between the local folder name and the published name is intentional.
 
 Expected structure:
 
@@ -237,7 +237,7 @@ repo-audit-action/                   # local directory (published name: Upkeep)
 
 > Archive note: the `docs/<locale>/plans/` tree is a deliberate **archive** of the original step-by-step implementation plans (one set per locale). It is intentionally unlinked from any navigation index, and its fenced blocks (code and embedded doc templates) are kept **verbatim** from the zh-TW source — so empty `referencedBy` and in-fence non-English text on these files are expected, not drift.
 
-> Sub-action mechanism: jobs in a reusable workflow run on the **caller's** checkout; Upkeep's own code (`src/`, `reviewers/`) is brought in via `uses: wei18/upkeep/.github/actions/<x>@v1` (GitHub fetches the Upkeep repo automatically). Each reviewer is an independent matrix job running a plain `claude-code-action` prompt (writing `findings/<reviewer>.json`), so **no in-run subagent spawning is required**, eliminating any `--agents`/`Agent` passthrough risk.
+> Sub-action mechanism: jobs in a reusable workflow run on the **caller's** checkout; Upkeep's own code (`src/`, `reviewers/`) is brought in via `uses: wei18/upkeep/.github/actions/<x>@v2` (GitHub fetches the Upkeep repo automatically). Each reviewer is an independent matrix job running a plain `claude-code-action` prompt (writing `findings/<reviewer>.json`), so **no in-run subagent spawning is required**, eliminating any `--agents`/`Agent` passthrough risk.
 
 ---
 
