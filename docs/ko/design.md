@@ -72,7 +72,7 @@
 
 ### 로컬 실행 (skill / 스크립트)
 
-동일한 파이프라인을 `scripts/local-audit.sh <target>`로 로컬에서 실행할 수 있다: discovery → 병렬 `claude -p` 리뷰어 서브프로세스 → synthesis → report. 모든 중간 산출물(inventory, prompts, findings, synthesis)은 `mktemp` 작업 디렉터리에 두고 `--add-dir`로 Claude에 권한을 부여한다 — 대상 저장소에는 아무것도 쓰지 않는다. 로컬 실행도 동일한 self-contained HTML 리포트를 생성하며, GitHub 이슈를 upsert하는 대신 이슈 markdown을 터미널 요약으로 출력한다. `skills/upkeep-audit/SKILL.md`는 이 스크립트의 얇은 Claude Code 래퍼로, `~/.cache/upkeep` 클론을 유지하고 감사를 실행한 뒤 findings를 채팅으로 요약한다.
+동일한 파이프라인을 `scripts/local-audit.sh <target>`로 로컬에서 실행할 수 있다: discovery → 병렬 `claude -p` 리뷰어 서브프로세스 → synthesis → report. 모든 중간 산출물(inventory, prompts, findings, synthesis)은 `mktemp` 작업 디렉터리에 두고 `--add-dir`로 Claude에 권한을 부여한다 — 대상 저장소에는 아무것도 쓰지 않는다. 로컬 실행도 동일한 self-contained HTML 리포트를 생성하며, GitHub 이슈를 upsert하는 대신 이슈 markdown을 터미널 요약으로 출력한다. `skills/upkeep-audit/SKILL.md`는 이 스크립트의 얇은 Claude Code 래퍼로, `~/.cache/upkeep` 클론을 유지하고 감사를 실행한 뒤 findings를 채팅으로 요약한다. 이 skill은 세 가지 방식으로 배포되며 모두 동일한 디렉터리를 가리킨다: Claude Code plugin으로(저장소 루트의 `.claude-plugin/marketplace.json`이 `skills/upkeep-audit/`을 `upkeep`이라는 이름의 single-skill plugin으로 등록하며 `/plugin install upkeep@upkeep`으로 설치), `npx skills add wei18/upkeep --skill upkeep-audit`을 통해(vercel-labs/skills 플랫 레이아웃), 또는 `~/.claude/skills/`에 수동 복사. 배포는 패키징일 뿐이며 — CI workflow는 여전히 직접적인 파이프라인 진입점으로, skill을 거치지 않는다.
 
 ---
 
@@ -220,6 +220,7 @@ repo-audit-action/                   # 로컬 디렉터리（발행명 Upkeep）
 │   ├── workflows/audit.yml          # 재사용 가능한 workflow（on: workflow_call）: jobs/matrix 편성
 │   └── actions/                     # composite 서브 action（workflow의 job uses에서 참조, Upkeep 코드 포함）
 │       ├── discovery/  reviewer/  synthesis/  report/
+├── .claude-plugin/marketplace.json  # plugin marketplace 카탈로그(plugin 이름: upkeep, source: ./skills/upkeep-audit)
 ├── README.md                        # 영어 base 사용법（job-level uses: 예시, secret/권한）+ 언어 전환 목록
 ├── docs/
 │   ├── en/      README 없음（루트가 en); overview.md  design.md  why-reusable-workflow.md  plans/
@@ -228,6 +229,7 @@ repo-audit-action/                   # 로컬 디렉터리（발행명 Upkeep）
 │   └── （다국어 사용자 문서는 모두 docs/<locale>/; 루트 README.md는 en base）
 ├── reviewers/<locale>/              # 7개 내장 rubric + _reviewer-prompt + _synthesis-prompt, 로케일별(en, zh-TW); rubric_lang으로 선택
 ├── skills/upkeep-audit/             # Claude Code skill: 로컬 실행용 얇은 래퍼 (~/.cache/upkeep에 clone)
+│   └── .claude-plugin/plugin.json   # plugin manifest (single-skill 레이아웃; SKILL.md는 plugin 루트에 위치)
 ├── scripts/local-audit.sh           # 로컬 pipeline 오케스트레이터 (CI와 동일한 플로우; 중간 산출물은 임시 디렉터리)
 ├── src/                             # discovery/consolidate/report/matrix/prompt-bundle 등 확정적 TS
 └── test/                            # 단위 + 계약 + e2e（테스트 샘플: §10 참조）

@@ -72,7 +72,7 @@
 
 ### 本地执行（skill / 脚本）
 
-同一套 pipeline 可通过 `scripts/local-audit.sh <target>` 在本地执行：discovery → 并行 `claude -p` reviewer 子进程 → synthesis → report。所有中间产物（inventory、prompts、findings、synthesis）都放在 `mktemp` 工作目录，通过 `--add-dir` 授权给 Claude——不会写入目标 repo。本地执行产出同一份 self-contained HTML 报告；不会 upsert GitHub issue，而是把 issue markdown 打印出来作为终端摘要。`skills/upkeep-audit/SKILL.md` 是包装此脚本的 Claude Code 薄包装：维护 `~/.cache/upkeep` 的 clone、执行审计、在对话中总结 findings。
+同一套 pipeline 可通过 `scripts/local-audit.sh <target>` 在本地执行：discovery → 并行 `claude -p` reviewer 子进程 → synthesis → report。所有中间产物（inventory、prompts、findings、synthesis）都放在 `mktemp` 工作目录，通过 `--add-dir` 授权给 Claude——不会写入目标 repo。本地执行产出同一份 self-contained HTML 报告；不会 upsert GitHub issue，而是把 issue markdown 打印出来作为终端摘要。`skills/upkeep-audit/SKILL.md` 是包装此脚本的 Claude Code 薄包装：维护 `~/.cache/upkeep` 的 clone、执行审计、在对话中总结 findings。此 skill 以三种方式发布，均指向同一个目录：作为 Claude Code plugin（repo 根目录的 `.claude-plugin/marketplace.json` 将 `skills/upkeep-audit/` 列为名为 `upkeep` 的 single-skill plugin，通过 `/plugin install upkeep@upkeep` 安装）、通过 `npx skills add wei18/upkeep --skill upkeep-audit`（vercel-labs/skills 扁平布局），或手动复制到 `~/.claude/skills/`。发布仅是打包层面——CI workflow 仍是直接的 pipeline 入口，不会绕经此 skill。
 
 ---
 
@@ -220,6 +220,7 @@ repo-audit-action/                   # 本地目录（发布名 Upkeep）
 │   ├── workflows/audit.yml          # 可复用 workflow（on: workflow_call）：jobs/matrix 编排
 │   └── actions/                     # composite 子 action（被 workflow 的 job uses，自带 Upkeep 代码）
 │       ├── discovery/  reviewer/  synthesis/  report/
+├── .claude-plugin/marketplace.json  # plugin marketplace 清单（plugin 名称：upkeep，source：./skills/upkeep-audit）
 ├── README.md                        # 英文 base 用法（job 级 uses: 示例、secret/权限）+ 语言切换列
 ├── docs/
 │   ├── en/      README 无（根即 en）；overview.md  design.md  why-reusable-workflow.md  plans/
@@ -228,6 +229,7 @@ repo-audit-action/                   # 本地目录（发布名 Upkeep）
 │   └── （多语用户文档一律 docs/<locale>/；root README.md 为 en base）
 ├── reviewers/<locale>/              # 7 位内置 rubric + _reviewer-prompt + _synthesis-prompt，按语系分置（en、zh-TW）；由 rubric_lang 选择
 ├── skills/upkeep-audit/             # Claude Code skill：本地执行薄包装（clone 到 ~/.cache/upkeep）
+│   └── .claude-plugin/plugin.json   # plugin manifest（single-skill 布局；SKILL.md 位于 plugin 根目录）
 ├── scripts/local-audit.sh           # 本地 pipeline 协调器（与 CI 同流程；中间产物放临时目录）
 ├── src/                             # discovery/consolidate/report/matrix/prompt-bundle 等确定性 TS
 └── test/                            # 单元 + 契约 + e2e（样本见 §10）

@@ -72,7 +72,7 @@ Key points:
 
 ### Local Execution (skill / script)
 
-The same pipeline runs locally via `scripts/local-audit.sh <target>`: discovery → parallel `claude -p` reviewer subprocesses → synthesis → report. All intermediates (inventory, prompts, findings, synthesis) live in a `mktemp` work dir granted to Claude via `--add-dir` — nothing is written into the target repo. Local runs produce the same self-contained HTML report; instead of upserting a GitHub issue, the issue markdown is printed as the terminal summary. `skills/upkeep-audit/SKILL.md` is a thin Claude Code wrapper around the script: it maintains a clone in `~/.cache/upkeep`, runs the audit, and summarizes findings in chat.
+The same pipeline runs locally via `scripts/local-audit.sh <target>`: discovery → parallel `claude -p` reviewer subprocesses → synthesis → report. All intermediates (inventory, prompts, findings, synthesis) live in a `mktemp` work dir granted to Claude via `--add-dir` — nothing is written into the target repo. Local runs produce the same self-contained HTML report; instead of upserting a GitHub issue, the issue markdown is printed as the terminal summary. `skills/upkeep-audit/SKILL.md` is a thin Claude Code wrapper around the script: it maintains a clone in `~/.cache/upkeep`, runs the audit, and summarizes findings in chat. The skill is distributed three ways, all pointing at the same directory: as a Claude Code plugin (`.claude-plugin/marketplace.json` at the repo root lists `skills/upkeep-audit/` as a single-skill plugin named `upkeep`, installed via `/plugin install upkeep@upkeep`), via `npx skills add wei18/upkeep --skill upkeep-audit` (vercel-labs/skills flat layout), or by manual copy into `~/.claude/skills/`. Distribution is packaging only — the CI workflow remains a direct pipeline entry and does not route through the skill.
 
 ---
 
@@ -220,6 +220,7 @@ repo-audit-action/                   # local directory (published name: Upkeep)
 │   ├── workflows/audit.yml          # reusable workflow (on: workflow_call): jobs/matrix orchestration
 │   └── actions/                     # composite sub-actions (used by the workflow's jobs; carry Upkeep's own code)
 │       ├── discovery/  reviewer/  synthesis/  report/
+├── .claude-plugin/marketplace.json  # plugin marketplace catalog (plugin name: upkeep, source: ./skills/upkeep-audit)
 ├── README.md                        # English base usage (job-level uses: example, secret/permissions) + language switcher
 ├── docs/
 │   ├── en/      no README (root is en); overview.md  design.md  why-reusable-workflow.md  plans/
@@ -228,6 +229,7 @@ repo-audit-action/                   # local directory (published name: Upkeep)
 │   └── (all multilingual user docs under docs/<locale>/; root README.md is the en base)
 ├── reviewers/<locale>/              # 7 built-in rubrics + _reviewer-prompt + _synthesis-prompt, per locale (en, zh-TW); picked by rubric_lang
 ├── skills/upkeep-audit/             # Claude Code skill: thin local-run wrapper (clones to ~/.cache/upkeep)
+│   └── .claude-plugin/plugin.json   # plugin manifest (single-skill layout; SKILL.md at plugin root)
 ├── scripts/local-audit.sh           # local pipeline orchestrator (same flow as CI; temp-dir intermediates)
 ├── src/                             # deterministic TS: discovery/consolidate/report/matrix/prompt-bundle, etc.
 └── test/                            # unit + contract + e2e (samples in §10)
