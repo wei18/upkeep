@@ -2,16 +2,22 @@
 import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { consolidate } from './consolidate.js';
+import { finalizeReviewerOutput } from './finalize.js';
 import { renderHtml } from './report-html.js';
 import { renderIssueMarkdown } from './report-issue.js';
-import type { ReviewerOutput, SynthesisOutput, Severity } from './types.js';
+import type { ReviewerName, ReviewerOutput, SynthesisOutput, Severity } from './types.js';
 
 export function loadReviewerOutputs(findingsDir: string): ReviewerOutput[] {
   if (!existsSync(findingsDir)) return [];
   return readdirSync(findingsDir)
     .filter((f) => f.endsWith('.json'))
     .sort()
-    .map((f) => JSON.parse(readFileSync(join(findingsDir, f), 'utf8')) as ReviewerOutput);
+    .map((f) => {
+      // a corrupt/invalid findings file degrades to a failed reviewer, never crashes the report
+      let raw: unknown = null;
+      try { raw = JSON.parse(readFileSync(join(findingsDir, f), 'utf8')); } catch { /* keep null */ }
+      return finalizeReviewerOutput(raw, f.slice(0, -'.json'.length) as ReviewerName);
+    });
 }
 
 export function loadSynthesis(path: string): SynthesisOutput | null {

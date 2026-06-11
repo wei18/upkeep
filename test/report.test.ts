@@ -32,6 +32,14 @@ describe('report pipeline', () => {
     expect(outs.map((o) => o.reviewer)).toEqual(['docs_staleness', 'i18n']);
   });
 
+  it('a corrupt findings file becomes a failed reviewer instead of crashing the load', () => {
+    const { fdir } = fixture();
+    writeFileSync(join(fdir, 'convention.json'), '{ this is not json');
+    const outs = loadReviewerOutputs(fdir);
+    expect(outs.map((o) => o.reviewer)).toEqual(['convention', 'docs_staleness', 'i18n']);
+    expect(outs[0]).toEqual({ reviewer: 'convention', status: 'failed', findings: [] });
+  });
+
   it('loadSynthesis returns null when file absent', () => {
     expect(loadSynthesis(join(tmpdir(), 'no-such-synthesis.json'))).toBeNull();
   });
