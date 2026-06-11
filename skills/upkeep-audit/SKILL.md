@@ -17,7 +17,7 @@ Run the full Upkeep audit pipeline (discovery → parallel reviewers → synthes
    ```bash
    ~/.cache/upkeep/scripts/local-audit.sh <target-path> [--model M] [--rubric-lang L] [--max-turns N] [--out FILE]
    ```
-   Pass flags only when the user asked for them. Defaults match the CI inputs (`claude-opus-4-8`, `en`, `30`); the report defaults to `./upkeep-report.html` in the current working directory.
+   Pass flags only when the user asked for them, with one exception: the report defaults to `./upkeep-report.html` in the current working directory, so if the working directory is inside the target repo, pass `--out` pointing outside it (e.g. `~/upkeep-report.html`) — the audit must never write into the target repo. Other defaults match the CI inputs (`claude-opus-4-8`, rubric `en`, `30` turns); `--rubric-lang` accepts `en` or `zh-TW`.
 3. **Summarize**: the script prints the report markdown at the end. Present the findings grouped by severity (high → medium → low), each with its file path and a one-line problem statement, then give the absolute path of the generated report file (`upkeep-report.html` by default, or the `--out` path). If any reviewers failed, name them.
 
 ## Requirements (tell the user what is missing instead of failing silently)
