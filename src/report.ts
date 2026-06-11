@@ -31,6 +31,6 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const runUrl = process.env.UPKEEP_RUN_URL || undefined;
   const artifactExpiresAtISO = process.env.UPKEEP_ARTIFACT_EXPIRES_AT || undefined;
   writeFileSync(outHtml ?? 'report.html', renderHtml(report));
-  writeFileSync(outIssue ?? 'issue.md', renderIssueMarkdown(report, minSeverity, { runUrl, artifactExpiresAtISO }));
+  writeFileSync(outIssue ?? 'issue.md', renderIssueMarkdown(report, minSeverity, { runUrl, artifactExpiresAtISO, reportPath: outHtml }));
   process.stdout.write(`report: ${report.stats.total} findings, ${report.themes.length} themes, ${report.stats.failedReviewers.length} failed reviewers\n`);
 }

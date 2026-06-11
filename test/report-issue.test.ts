@@ -66,6 +66,19 @@ describe('renderIssueMarkdown', () => {
   it('footer falls back to the generic line without run info', () => {
     expect(renderIssueMarkdown(report)).toContain('see the workflow run HTML artifact');
   });
+  it('footer points at the local report file when given a report path and no run url', () => {
+    const md = renderIssueMarkdown(report, 'low', { reportPath: '/tmp/upkeep-report.html' });
+    expect(md).toContain('/tmp/upkeep-report.html');
+    expect(md).not.toContain('workflow run');
+  });
+  it('footer prefers the run link over a report path', () => {
+    const md = renderIssueMarkdown(report, 'low', {
+      runUrl: 'https://github.com/o/r/actions/runs/123',
+      reportPath: '/tmp/upkeep-report.html',
+    });
+    expect(md).toContain('https://github.com/o/r/actions/runs/123');
+    expect(md).not.toContain('/tmp/upkeep-report.html');
+  });
 
   it('minSeverity filters lower-severity findings out of the issue and recomputes the summary', () => {
     const r: ConsolidatedReport = {

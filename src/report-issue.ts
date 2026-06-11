@@ -7,6 +7,7 @@ export const ISSUE_MARKER = '<!-- upkeep:report -->';
 export interface IssueRenderOpts {
   runUrl?: string;              // direct link to the workflow run hosting the report-html artifact
   artifactExpiresAtISO?: string; // artifact expiry (per the repo's gh retention setting)
+  reportPath?: string;          // local report file, used when there is no workflow run (local-audit.sh)
 }
 
 function cell(s: string): string {
@@ -14,7 +15,10 @@ function cell(s: string): string {
 }
 
 function footer(report: ConsolidatedReport, opts: IssueRenderOpts): string {
-  if (!opts.runUrl) return '_Full interactive report: see the workflow run HTML artifact._';
+  if (!opts.runUrl) {
+    if (opts.reportPath) return `_Full interactive report: \`${opts.reportPath}\`._`;
+    return '_Full interactive report: see the workflow run HTML artifact._';
+  }
   let line = `_Full interactive HTML report: [open this run](${opts.runUrl}) → download the \`report-html\` artifact`;
   if (opts.artifactExpiresAtISO) {
     const days = Math.round(
