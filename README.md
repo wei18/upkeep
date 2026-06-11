@@ -6,17 +6,38 @@
 
 **English** · [繁體中文](docs/zh-TW/README.md) · [简体中文](docs/zh-CN/README.md) · [日本語](docs/ja/README.md) · [한국어](docs/ko/README.md)
 
-A reusable GitHub Actions workflow that keeps your repo's docs, specs, and assets honest — catching drift before it compounds.
+**An AI audit crew for your repo, installed as a skill.** Upkeep dispatches focused AI reviewers in parallel to catch drift — stale docs, specs that no longer match the code, orphaned assets, broken conventions — and reports it with evidence before it compounds.
 
-> 💳 **No separate API bill.** Upkeep runs on your existing **Claude Pro/Max subscription** (OAuth via `claude setup-token`) — no Anthropic API key, no per-token billing. And it's **output-only**: it reports drift with evidence and severity, but never edits or deletes your files.
+> 💳 **No separate API bill.** Upkeep runs on your existing **Claude Pro/Max subscription** — your logged-in `claude` CLI locally, or OAuth via `claude setup-token` in CI. No Anthropic API key, no per-token billing. And it's **output-only**: it reports drift with evidence and severity, but never edits or deletes your files.
+
+## Install
+
+**Claude Code** — install as a plugin:
+
+```
+/plugin marketplace add wei18/upkeep
+/plugin install upkeep@upkeep
+```
+
+**Other agents** (Cursor, Copilot, and any of the 70+ agents supported by [skills](https://github.com/vercel-labs/skills)):
+
+```bash
+npx skills add wei18/upkeep --skill upkeep-audit
+```
+
+Then ask in any session:
+
+> Run an upkeep audit on /path/to/repo
+
+On first use the skill clones the Upkeep engine into `~/.cache/upkeep` and installs dependencies automatically. You get findings grouped by severity in chat, plus a self-contained HTML report.
 
 ## What it does
 
-- Scans a repository and dispatches a team of **focused AI reviewers** (powered by Anthropic's `claude-code-action`) in parallel.
+- Scans a repository and dispatches a team of **focused AI reviewers** in parallel.
 - Catches stale docs that drifted from code, specs that no longer match implementation, duplicate or orphaned files, convention violations, and out-of-sync translated docs.
 - **Reports divergence with evidence** — it does not assume one artifact is always the source of truth.
 - **Never edits or deletes anything** — output only.
-- Produces a self-contained **HTML report** (workflow artifact) and a **persistent GitHub tracking issue** (upserted, never duplicated).
+- Produces a self-contained **HTML report** — and, when run in CI, a **persistent GitHub tracking issue** (upserted, never duplicated).
 
 ## How it compares
 
@@ -31,9 +52,32 @@ Upkeep isn't a linter or a PR bot — it's a **whole-repo, semantic drift audito
 | Edits your code? | **Never** — output only | No | Suggests changes |
 | Cost | Your **Claude Pro/Max** plan | Free (you write the logic) | Copilot/Cursor subscription |
 
-## Usage
+## Run as a plain script
 
-Create `.github/workflows/audit.yml` in your repo:
+No agent at all? The same pipeline runs as a standalone script:
+
+```bash
+git clone --depth 1 https://github.com/wei18/upkeep ~/.cache/upkeep
+cd ~/.cache/upkeep && npm ci
+./scripts/local-audit.sh /path/to/repo --out ~/upkeep-report.html
+```
+
+| Flag | Default | CI equivalent |
+|---|---|---|
+| `--model` | `claude-opus-4-8` | `model` |
+| `--rubric-lang` | `en` | `rubric_lang` |
+| `--max-turns` | `30` | `max_turns` |
+| `--out` | `./upkeep-report.html` | report artifact |
+
+**Requirements:** a logged-in `claude` CLI (Pro/Max; no `setup-token` and no GitHub access needed), Node 20+, git.
+
+**Output:** the same self-contained HTML report (`upkeep-report.html` by default) plus a terminal summary. Local runs never create GitHub issues.
+
+Prefer a manual skill install? Copy [`skills/upkeep-audit/`](skills/upkeep-audit/) into `~/.claude/skills/`.
+
+## Automate it in CI
+
+The same audit crew, on a schedule. Create `.github/workflows/audit.yml` in your repo:
 
 ```yaml
 name: repo audit
@@ -49,7 +93,7 @@ permissions:
 
 jobs:
   audit:
-    uses: wei18/upkeep/.github/workflows/audit.yml@v1
+    uses: wei18/upkeep/.github/workflows/audit.yml@v2
     with:
       model: claude-opus-4-8     # optional
       issue_label: audit         # optional; default: audit
@@ -68,34 +112,7 @@ jobs:
 - A GitHub issue labeled `audit` — the same issue is updated on every run (upserted), not duplicated.
 - A self-contained HTML report uploaded as the `report-html` workflow artifact. The tracking issue links straight to it; otherwise find it under the run's **Artifacts** (Actions → the run) or grab it with `gh run download <run-id> -n report-html`. GitHub serves artifacts as a downloadable zip, and they expire per your repo's retention setting.
 
-## Run locally
-
-The same audit pipeline also runs on your machine — no GitHub Actions, no secrets, no GitHub permissions.
-
-**Via Claude Code skill** — copy [`skills/upkeep-audit/`](skills/upkeep-audit/) into `~/.claude/skills/`, then ask in any Claude Code session:
-
-> Run an upkeep audit on /path/to/repo
-
-On first use the skill clones Upkeep into `~/.cache/upkeep` and installs dependencies automatically.
-
-**Via plain script** (no Claude Code session needed):
-
-```bash
-git clone --depth 1 https://github.com/wei18/upkeep ~/.cache/upkeep
-cd ~/.cache/upkeep && npm ci
-./scripts/local-audit.sh /path/to/repo --out ~/upkeep-report.html
-```
-
-| Flag | Default | CI equivalent |
-|---|---|---|
-| `--model` | `claude-opus-4-8` | `model` |
-| `--rubric-lang` | `en` | `rubric_lang` |
-| `--max-turns` | `30` | `max_turns` |
-| `--out` | `./upkeep-report.html` | report artifact |
-
-**Requirements:** a logged-in `claude` CLI (Pro/Max; no `setup-token` and no GitHub access needed), Node 20+, git.
-
-**Output:** the same self-contained HTML report (`upkeep-report.html` by default) plus a terminal summary. Local runs never create GitHub issues.
+> Already on `@v1`? It keeps working but is frozen — switch the tag to `@v2`. The interface is identical.
 
 ## Reviewers
 
